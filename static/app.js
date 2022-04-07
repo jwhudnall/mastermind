@@ -12,13 +12,20 @@ row10Btn.click(() => {
 
 const sendGuessToServer = async function (guessList) {
   try {
-    const res = await axios.get("/api/guess", { params: { guessList } });
+    // const res = await axios.get("/api/guess", { params: { guessList } });
+    const res = await axios.post(
+      "/api/guess",
+      { guess: { guessList } },
+      { headers: { "content-type": "application/json" } }
+    );
     console.log(res.data);
 
     if (res.data.error) {
       alert("All inputs are required");
     } else {
-      provideFeedback(10, res);
+      console.log("Results:");
+      console.log(res.data.results);
+      provideFeedback(10, res.data.results);
       // Disable this row and traverse up the guess list.
       disableRow(10);
     }
@@ -29,8 +36,8 @@ const sendGuessToServer = async function (guessList) {
 
 const provideFeedback = (curRow, res) => {
   let curPeg = 0;
-  if (res.data.red) {
-    for (let i = 0; i < res.data.red; i++) {
+  if (res.red) {
+    for (let i = 0; i < res.red; i++) {
       // Set ID of the curPeg to an image having a red circle background
       const target = $(`#row${curRow}ResultPeg-${curPeg}`);
       target.attr("src", "/static/images/result-circle-red.png");
@@ -38,8 +45,8 @@ const provideFeedback = (curRow, res) => {
       curPeg++;
     }
   }
-  if (res.data.white) {
-    for (let i = 0; i < res.data.white; i++) {
+  if (res.white) {
+    for (let i = 0; i < res.white; i++) {
       const target = $(`#row${curRow}ResultPeg-${curPeg}`);
       target.attr("src", "/static/images/result-circle-white.png");
       console.log(`Result peg: ${curPeg} set to WHITE.`);

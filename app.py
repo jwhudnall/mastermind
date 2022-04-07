@@ -13,6 +13,8 @@ class Mastermind:
     self.cols = cols
     self.winning_numbers = Mastermind.get_numbers(self.cols)
     self.remaining_guess_count = rows
+    self.current_guess = 0
+    self.game_over = False
 
   def __repr__(self):
     return f'<Mastermind rows={self.rows} cols={self.cols}>'
@@ -79,19 +81,27 @@ def display_game():
   # TODO: Pass game to route and dynamically render the game board using jinja
   return render_template('index.html')
 
-@app.route("/api/guess", methods=["GET"])
+@app.route("/api/guess", methods=["POST"])
 def handle_guess():
   '''
   Receives and validates guess from the client.
   '''
-  # jQuery object list deconstructed: https://stackoverflow.com/questions/23889107/sending-array-data-with-jquery-and-flask
-  guess = request.args.getlist('guessList[]')
+  guess = request.json['guess']['guessList']
   filtered = [n for n in guess if n != '']
 
-  # TODO: verify guess length vs. game class cols. If different, return appropriate JSON response.
   if (len(filtered) != game.cols):
-    return jsonify(error="Guess values must equal Game columns.")
+    return jsonify(error='Guess values must equal Game columns.')
   else:
     results = game.check_guess(game.winning_numbers, guess)
-    return jsonify(results)
+    game.current_guess += 1
+    game.remaining_guess_count -= 1
+    if results['red'] == 4:
+      game.game_over = True
+
+    return jsonify({
+      'results': results,
+      'game_over':game.game_over,
+      'current_guess': game.current_guess,
+      'remaining_guess_count': game.remaining_guess_count
+      })
 
