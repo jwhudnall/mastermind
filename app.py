@@ -41,16 +41,16 @@ class Mastermind:
   def check_guess(self, actual, guess):
     '''Compares each value in the actual, guess lists for equality. Returns feedback'''
     key = {
-      'correct_num': 0,
-      'correct_num_and_location': 0,
-      'incorrect': 0
+      'white': 0,
+      'red': 0,
+      'blank': 0
     }
     actual_copy = actual[:]
     guess_copy = guess[:]
 
     for i in range(len(guess)):
       if guess[i] == actual[i]:
-        key['correct_num_and_location'] = key['correct_num_and_location'] + 1
+        key['red'] = key['red'] + 1
         # Remove for later inclusion check
         actual_copy[i] = None
         guess_copy[i] = None
@@ -58,12 +58,12 @@ class Mastermind:
     for i in range(len(guess_copy)):
       cur_val = guess_copy[i]
       if cur_val != None and cur_val in actual_copy:
-        key['correct_num'] = key['correct_num'] + 1
+        key['white'] = key['white'] + 1
         # Set index of value in actual_copy to None
         idx = actual_copy.index(cur_val)
         actual_copy[idx] = None
       elif cur_val != None:
-        key['incorrect'] = key['incorrect'] + 1
+        key['blank'] = key['blank'] + 1
 
     return key
 
@@ -86,13 +86,12 @@ def handle_guess():
   '''
   # jQuery object list deconstructed: https://stackoverflow.com/questions/23889107/sending-array-data-with-jquery-and-flask
   guess = request.args.getlist('guessList[]')
+  filtered = [n for n in guess if n != '']
 
-  # Compare guess values vs. computer values
-  # Return feedback
-  results = game.check_guess(game.winning_numbers, guess)
-  print(results)
-  # send results back as JSON
-  return jsonify(results)
+  # TODO: verify guess length vs. game class cols. If different, return appropriate JSON response.
+  if (len(filtered) != game.cols):
+    return jsonify(error="Guess values must equal Game columns.")
+  else:
+    results = game.check_guess(game.winning_numbers, guess)
+    return jsonify(results)
 
-  import pdb
-  pdb.set_trace()
