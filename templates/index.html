@@ -11,6 +11,85 @@
 <body>
   <h1>Mastermind</h1>
   <p>Hello, world!</p>
+
+  <table>
+    <tbody>
+      <!-- Computer Answers -->
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+      </tr>
+      <!-- Player Guess #10 -->
+      <tr id="row10">
+        <td>
+          <div><input type="number"></div>
+        </td>
+        <td>
+          <div><input type="number"></div>
+        </td>
+        <td>
+          <div><input type="number"></div>
+        </td>
+        <td>
+          <div><input type="number"></div>
+        </td>
+        <td>
+          <table cellspacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <td>X</td>
+                <td>X</td>
+              </tr>
+              <tr>
+                <td>X</td>
+                <td>X</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <input type="button" value="Submit" id="row10Btn">
+        </td>
+      </tr>
+      <!-- Player Guess #09 -->
+      <tr>
+        <td>
+          <div><input type="number"></div>
+        </td>
+        <td>
+          <div><input type="number"></div>
+        </td>
+        <td>
+          <div><input type="number"></div>
+        </td>
+        <td>
+          <div><input type="number"></div>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <td>X</td>
+              <td>X</td>
+            </tr>
+            <tr>
+              <td>X</td>
+              <td>X</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"
+    integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="/static/app.js"></script>
 </body>
 
 </html>
