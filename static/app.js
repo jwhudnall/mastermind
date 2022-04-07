@@ -14,6 +14,7 @@ const sendGuessToServer = async function (guessList) {
   try {
     const res = await axios.get("/api/guess", { params: { guessList } });
     console.log(res.data);
+    console.log(`Correct guess and location: ${res.data.correct_num_and_location}`);
     return res.data;
   } catch (e) {
     alert(`Something went wrong translating your guess. Error info: ${e}`);

@@ -1,14 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import requests
 
 app = Flask(__name__)
-
-
-##################
-# Helper Functions
-##################
-
-
 
 ###################
 # OOP / Game Class
@@ -98,6 +91,8 @@ def handle_guess():
   # Return feedback
   results = game.check_guess(game.winning_numbers, guess)
   print(results)
+  # send results back as JSON
+  return jsonify(results)
 
   import pdb
   pdb.set_trace()
