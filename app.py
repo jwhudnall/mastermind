@@ -13,7 +13,7 @@ class Mastermind:
     self.cols = cols
     self.winning_numbers = Mastermind.get_numbers(self.cols)
     self.remaining_guess_count = rows
-    self.current_guess = 0
+    self.current_guess = 1
     self.game_over = False
 
   def __repr__(self):
@@ -79,7 +79,7 @@ print(game.winning_numbers)
 @app.route('/')
 def display_game():
   # TODO: Pass game to route and dynamically render the game board using jinja
-  return render_template('index.html')
+  return render_template('index.html', game=game)
 
 @app.route("/api/guess", methods=["POST"])
 def handle_guess():

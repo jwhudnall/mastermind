@@ -10,7 +10,75 @@
 
 <body>
   <h1>Mastermind</h1>
+  {% if game %}
 
+  <!-- DELETE LATER -->
+  <p>{{game.cols}}</p>
+  <p>{{game.rows}}</p>
+  <p>{{game.winning_numbers}}</p>
+  <p>{{game.remaining_guess_count}}</p>
+  <p>{{game.current_guess}}</p>
+  <p>{{game.game_over}}</p>
+
+  <table>
+    <!-- Computer Answers -->
+    <tr>
+      <td>?</td>
+      <td>?</td>
+      <td>?</td>
+      <td>?</td>
+    </tr>
+    <!-- Dynamic population of game rows/cols -->
+    {% for row in range(game.rows,0,-1) %}
+    <tr id="row{{row}}">
+      {% for col in range(game.cols,0,-1) %}
+      <td>
+        {% if row == game.current_guess %}
+        <div><input type="number" min="0" max="7" required></div>
+        {% else %}
+        <div><input type="number" min="0" max="7" required disabled></div>
+        {% endif %}
+      </td>
+      {% endfor %}
+      <td>
+        <table cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td>
+                <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+              </td>
+              <td>
+                <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+              </td>
+              <td>
+                <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td>
+        {% if row == game.current_guess %}
+        <input type="button" value="Submit" id="row{{row}}Btn">
+        {% else %}
+        <input type="button" value="Submit" id="row{{row}}Btn" hidden>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+
+
+  </table>
+  {% endif %}
+
+
+
+  <p>Functionality Area:</p>
   <table>
     <tbody>
       <!-- Computer Answers -->
