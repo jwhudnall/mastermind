@@ -71,6 +71,15 @@
   </table>
   {% endif %}
 
+  <!-- Game Form -->
+  <form method="POST">
+    <label for="num_cols">Sequence Length</label>
+    <input type="number" id="num_cols" name="num_cols" min="4" max="8" value="{{game.cols}}">
+    <label for="num_rows">Guess Attempts</label>
+    <input type="number" id="num_rows" name="num_rows" min="1" max="15" value="{{game.rows}}">
+    <button>New Game</button>
+  </form>
+
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"
     integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>

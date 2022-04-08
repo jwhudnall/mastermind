@@ -86,10 +86,16 @@ print(game.winning_numbers)
 # Main Routes
 #############
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def display_game():
-  # TODO: Pass game to route and dynamically render the game board using jinja
-  return render_template('index.html', game=game)
+  if request.method == 'GET':
+    return render_template('index.html', game=game)
+  else:
+    global_list = globals()
+    num_cols = int(request.form.get('num_cols', None))
+    num_rows = int(request.form.get('num_rows', None))
+    global_list['game'] =  Mastermind(rows=num_rows, cols=num_cols)
+    return render_template('index.html', game=game)
 
 @app.route("/api/guess", methods=["POST"])
 def handle_guess():

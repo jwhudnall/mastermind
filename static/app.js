@@ -1,23 +1,6 @@
 // const row10Vals = $("#row10 td div input");
 const submitGuessBtn = $(".submitGuessBtn");
 
-// submitGuessBtn.click(async function () {
-//   const rowNum = parseInt(this.id.split("-")[1]);
-//   const inputs = $(`#row${rowNum} td div input`);
-//   const values = $.map(inputs, function (val) {
-//     return val.value;
-//   });
-//   const JSValues = $.makeArray(values);
-//   const res = await sendGuessToServer(JSValues);
-//   if (res) {
-//     provideFeedback(rowNum, res.results);
-//     disableRow(rowNum);
-//     checkForGameOver(res);
-//     showNextRow(rowNum + 1);
-//     decrementGuessCount();
-//   }
-// });
-
 const handleGuess = async function () {
   const rowNum = parseInt(this.id.split("-")[1]);
   const inputs = $(`#row${rowNum} td div input`);
