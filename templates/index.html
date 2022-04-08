@@ -42,7 +42,7 @@
               <!-- odds -->
               {% for col in range(0, game.cols, 2) %}
               <td>
-                <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-empty.png" width="15"
+                <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-black.png" width="15"
                   height="15" alt>
               </td>
               {% endfor %}
@@ -51,7 +51,7 @@
               <!-- evens -->
               {% for col in range(1, game.cols, 2) %}
               <td>
-                <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-empty.png" width="15"
+                <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-black.png" width="15"
                   height="15" alt>
               </td>
               {% endfor %}
