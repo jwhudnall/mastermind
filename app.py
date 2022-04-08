@@ -79,8 +79,9 @@ class Mastermind:
 
     return key
 
-game = Mastermind()
-print(game.winning_numbers)
+# game = Mastermind()
+game = None
+# print(game.winning_numbers)
 
 #############
 # Main Routes
@@ -111,7 +112,7 @@ def handle_guess():
     results = game.check_guess(game.winning_numbers, guess)
     game.current_guess += 1
     game.remaining_guess_count -= 1
-    if results['red'] == 4:
+    if results['red'] == game.cols:
       game.game_over = True
 
     return jsonify({

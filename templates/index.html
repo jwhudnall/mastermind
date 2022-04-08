@@ -28,7 +28,7 @@
     <tr id="row{{row}}">
       {% for col in range(game.cols,0,-1) %}
       <td>
-        {% if row == game.current_guess %}
+        {% if row == 1 %}
         <div><input type="number" min="0" max="7" required></div>
         {% else %}
         <div><input type="number" min="0" max="7" required disabled></div>
@@ -36,29 +36,32 @@
       </td>
       {% endfor %}
       <td>
+        <!-- Guess Feedback Peg Area, dynamically rendered (evens & odds) -->
         <table cellspacing="0" cellpadding="0">
           <tbody>
             <tr>
+              <!-- odds -->
+              {% for col in range(0, game.cols, 2) %}
               <td>
-                <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+                <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-empty.png" width="15"
+                  height="15" alt>
               </td>
-              <td>
-                <img id="row{{row}}ResultPeg-1" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-              </td>
+              {% endfor %}
             </tr>
             <tr>
+              <!-- evens -->
+              {% for col in range(1, game.cols, 2) %}
               <td>
-                <img id="row{{row}}ResultPeg-2" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+                <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-empty.png" width="15"
+                  height="15" alt>
               </td>
-              <td>
-                <img id="row{{row}}ResultPeg-3" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-              </td>
+              {% endfor %}
             </tr>
           </tbody>
         </table>
       </td>
       <td>
-        {% if row == game.current_guess %}
+        {% if row == 1 %}
         <input type="button" value="Submit" class="submitGuessBtn" id="row-{{row}}-Btn">
         {% else %}
         <input type="button" value="Submit" class="submitGuessBtn" id="row-{{row}}-Btn" hidden>
