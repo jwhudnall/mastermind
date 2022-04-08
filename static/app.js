@@ -116,3 +116,30 @@ const showWinningSequence = (winningSequence) => {
 };
 
 submitGuessBtn.click(handleGuess);
+
+// Drag Events
+const draggableElements = document.querySelectorAll(".draggable");
+const droppableElements = document.querySelectorAll(".droppable");
+
+draggableElements.forEach((el) => {
+  el.addEventListener("dragstart", dragStart);
+});
+
+droppableElements.forEach((el) => {
+  el.addEventListener("dragover", dragOver);
+  el.addEventListener("drop", drop);
+});
+
+function dragStart(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function dragOver(e) {
+  e.preventDefault();
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.style.backgroundImage = `url('../static/images/guess-choices/peg${data}.gif')`;
+}

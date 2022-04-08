@@ -70,8 +70,29 @@
     {% endfor %}
 
 
+
   </table>
   {% endif %}
+
+  <div id="div1" class="droppable"
+    style="height: 32px; width: 32px; background-image: url('../static/images/result-circle-black.png')">
+  </div>
+
+  <!-- Player Peg Selection -->
+  <table>
+    <tbody>
+      <tr>
+        {% for n in range(8) %}
+        <td>
+          <a>
+            <img src="/static/images/guess-choices/peg{{n}}.gif" id="{{n}}" class="draggable" width="32" height="32"
+              draggable="true">
+          </a>
+        </td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
 
   <!-- Game Form -->
   <form method="POST">
