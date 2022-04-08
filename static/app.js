@@ -1,7 +1,24 @@
 // const row10Vals = $("#row10 td div input");
 const submitGuessBtn = $(".submitGuessBtn");
 
-submitGuessBtn.click(async function () {
+// submitGuessBtn.click(async function () {
+//   const rowNum = parseInt(this.id.split("-")[1]);
+//   const inputs = $(`#row${rowNum} td div input`);
+//   const values = $.map(inputs, function (val) {
+//     return val.value;
+//   });
+//   const JSValues = $.makeArray(values);
+//   const res = await sendGuessToServer(JSValues);
+//   if (res) {
+//     provideFeedback(rowNum, res.results);
+//     disableRow(rowNum);
+//     checkForGameOver(res);
+//     showNextRow(rowNum + 1);
+//     decrementGuessCount();
+//   }
+// });
+
+const handleGuess = async function () {
   const rowNum = parseInt(this.id.split("-")[1]);
   const inputs = $(`#row${rowNum} td div input`);
   const values = $.map(inputs, function (val) {
@@ -12,10 +29,13 @@ submitGuessBtn.click(async function () {
   if (res) {
     provideFeedback(rowNum, res.results);
     disableRow(rowNum);
-    showNextRow(rowNum + 1);
-    decrementGuessCount();
+    const gameIsOver = checkForGameOver(res);
+    if (!gameIsOver) {
+      showNextRow(rowNum + 1);
+      decrementGuessCount();
+    }
   }
-});
+};
 
 const sendGuessToServer = async function (guessList) {
   try {
@@ -32,9 +52,6 @@ const sendGuessToServer = async function (guessList) {
     } else {
       console.log("Results:");
       console.log(res.data);
-      if (res.data.game.game_over) {
-        return handleGameWin();
-      }
       return res.data;
     }
   } catch (e) {
@@ -85,6 +102,24 @@ const decrementGuessCount = () => {
 };
 
 const handleGameWin = () => {
-  submitGuessBtn.prop("disabled", true);
+  submitGuessBtn.prop("hidden", true);
   alert("Congratulations, you win!");
 };
+
+const handleGameLoss = () => {
+  submitGuessBtn.prop("hidden", true);
+  alert("Game Over. I'm sure you'll get it next time!");
+};
+
+const checkForGameOver = (res) => {
+  if (res.game.game_over) {
+    handleGameWin();
+    return true;
+  } else if (res.game.remaining_guess_count === 0) {
+    handleGameLoss();
+    return true;
+  }
+  return false;
+};
+
+submitGuessBtn.click(handleGuess);
