@@ -13,12 +13,8 @@
   {% if game %}
 
   <!-- DELETE LATER -->
-  <p>{{game.cols}}</p>
-  <p>{{game.rows}}</p>
   <p>{{game.winning_numbers}}</p>
-  <p>{{game.remaining_guess_count}}</p>
-  <p>{{game.current_guess}}</p>
-  <p>{{game.game_over}}</p>
+  <p>Remaining Guesses: <span id="numGuessesLeft">{{game.remaining_guess_count}}</span></p>
 
   <table>
     <!-- Computer Answers -->
@@ -48,15 +44,15 @@
                 <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
               </td>
               <td>
-                <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+                <img id="row{{row}}ResultPeg-1" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
               </td>
             </tr>
             <tr>
               <td>
-                <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+                <img id="row{{row}}ResultPeg-2" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
               </td>
               <td>
-                <img id="row{{row}}ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
+                <img id="row{{row}}ResultPeg-3" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
               </td>
             </tr>
           </tbody>
@@ -64,9 +60,9 @@
       </td>
       <td>
         {% if row == game.current_guess %}
-        <input type="button" value="Submit" id="row{{row}}Btn">
+        <input type="button" value="Submit" class="submitGuessBtn" id="row-{{row}}-Btn">
         {% else %}
-        <input type="button" value="Submit" id="row{{row}}Btn" hidden>
+        <input type="button" value="Submit" class="submitGuessBtn" id="row-{{row}}-Btn" hidden>
         {% endif %}
       </td>
     </tr>
@@ -75,97 +71,6 @@
 
   </table>
   {% endif %}
-
-
-
-  <p>Functionality Area:</p>
-  <table>
-    <tbody>
-      <!-- Computer Answers -->
-      <tr>
-        <td>?</td>
-        <td>?</td>
-        <td>?</td>
-        <td>?</td>
-      </tr>
-      <!-- Player Guess #10 -->
-      <tr id="row10">
-        <td>
-          <div><input type="number" min="0" max="7" required></div>
-        </td>
-        <td>
-          <div><input type="number" min="0" max="7" required></div>
-        </td>
-        <td>
-          <div><input type="number" min="0" max="7" required></div>
-        </td>
-        <td>
-          <div><input type="number" min="0" max="7" required></div>
-        </td>
-        <td>
-          <table cellspacing="0" cellpadding="0">
-            <tbody>
-              <tr>
-                <td>
-                  <img id="row10ResultPeg-0" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-                </td>
-                <td>
-                  <img id="row10ResultPeg-1" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img id="row10ResultPeg-2" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-                </td>
-                <td>
-                  <img id="row10ResultPeg-3" src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-        <td>
-          <input type="button" value="Submit" id="row10Btn">
-        </td>
-      </tr>
-      <!-- Player Guess #09 -->
-      <tr>
-        <td>
-          <div><input type="number" min="0" max="7" required></div>
-        </td>
-        <td>
-          <div><input type="number" min="0" max="7" required></div>
-        </td>
-        <td>
-          <div><input type="number" min="0" max="7" required></div>
-        </td>
-        <td>
-          <div><input type="number" min="0" max="7" required></div>
-        </td>
-        <td>
-          <table cellspacing="0" cellpadding="0">
-            <tr>
-              <td>
-                <img src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-              </td>
-              <td>
-                <img src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-              </td>
-              <td>
-                <img src="/static/images/result-circle-empty.png" width="15" height="15" alt>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"

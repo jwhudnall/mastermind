@@ -1,18 +1,24 @@
-const row10Vals = $("#row10 td div input");
-const row10Btn = $("#row10Btn");
+// const row10Vals = $("#row10 td div input");
+const submitGuessBtn = $(".submitGuessBtn");
 
-row10Btn.click(() => {
-  const values = $.map(row10Vals, function (val) {
+submitGuessBtn.click(async function () {
+  const rowNum = parseInt(this.id.split("-")[1]);
+  const inputs = $(`#row${rowNum} td div input`);
+  const values = $.map(inputs, function (val) {
     return val.value;
   });
-  console.log(typeof values);
   const JSValues = $.makeArray(values);
-  sendGuessToServer(JSValues);
+  const res = await sendGuessToServer(JSValues);
+  if (res) {
+    provideFeedback(rowNum, res.results);
+    disableRow(rowNum);
+    showNextRow(rowNum + 1);
+    decrementGuessCount();
+  }
 });
 
 const sendGuessToServer = async function (guessList) {
   try {
-    // const res = await axios.get("/api/guess", { params: { guessList } });
     const res = await axios.post(
       "/api/guess",
       { guess: { guessList } },
@@ -22,12 +28,14 @@ const sendGuessToServer = async function (guessList) {
 
     if (res.data.error) {
       alert("All inputs are required");
+      return false;
     } else {
       console.log("Results:");
-      console.log(res.data.results);
-      provideFeedback(10, res.data.results);
-      // Disable this row and traverse up the guess list.
-      disableRow(10);
+      console.log(res.data);
+      if (res.data.game.game_over) {
+        return handleGameWin();
+      }
+      return res.data;
     }
   } catch (e) {
     alert(`Something went wrong translating your guess. Error info: ${e}`);
@@ -38,7 +46,6 @@ const provideFeedback = (curRow, res) => {
   let curPeg = 0;
   if (res.red) {
     for (let i = 0; i < res.red; i++) {
-      // Set ID of the curPeg to an image having a red circle background
       const target = $(`#row${curRow}ResultPeg-${curPeg}`);
       target.attr("src", "/static/images/result-circle-red.png");
       console.log(`Result peg: ${curPeg} set to RED.`);
@@ -55,11 +62,29 @@ const provideFeedback = (curRow, res) => {
   }
 };
 
-const disableRow = (curRow) => {
-  const inputs = $(`#row${curRow} td div input`);
+const showNextRow = (row) => {
+  const inputs = $(`#row${row} td div input`);
+  inputs.each(function () {
+    $(this).prop("disabled", false);
+  });
+  $(`#row-${row}-Btn`).show();
+};
 
-  inputs.each(function (i, el) {
+const disableRow = (curRow) => {
+  const currInputs = $(`#row${curRow} td div input`);
+
+  currInputs.each(function () {
     $(this).prop("disabled", true);
   });
-  $(`#row${curRow}Btn`).hide();
+  $(`#row-${curRow}-Btn`).hide();
+};
+
+const decrementGuessCount = () => {
+  const currentVal = parseInt($("#numGuessesLeft").text());
+  $("#numGuessesLeft").text(currentVal - 1);
+};
+
+const handleGameWin = () => {
+  submitGuessBtn.prop("disabled", true);
+  alert("Congratulations, you win!");
 };
