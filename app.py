@@ -11,7 +11,7 @@ class Mastermind:
     '''Mastermind Game class.'''
     self.rows = rows
     self.cols = cols
-    self.winning_numbers = Mastermind.get_numbers(self.cols)
+    self.winning_sequence = Mastermind.get_numbers(self.cols)
     self.remaining_guess_count = rows
     self.current_guess = 1
     self.game_over = False
@@ -23,7 +23,7 @@ class Mastermind:
     return {
       "rows": self.rows,
       "cols": self.cols,
-      "winning_numbers": self.winning_numbers,
+      "winning_sequence": self.winning_sequence,
       "remaining_guess_count": self.remaining_guess_count,
       "current_guess": self.current_guess,
       "game_over": self.game_over
@@ -80,8 +80,8 @@ class Mastermind:
     return key
 
 # game = Mastermind()
-game = None
-# print(game.winning_numbers)
+game = Mastermind()
+# print(game.winning_sequence)
 
 #############
 # Main Routes
@@ -98,6 +98,7 @@ def display_game():
     global_list['game'] =  Mastermind(rows=num_rows, cols=num_cols)
     return render_template('index.html', game=game)
 
+
 @app.route("/api/guess", methods=["POST"])
 def handle_guess():
   '''
@@ -109,7 +110,7 @@ def handle_guess():
   if (len(filtered) != game.cols):
     return jsonify(error='Guess values must equal Game columns.')
   else:
-    results = game.check_guess(game.winning_numbers, guess)
+    results = game.check_guess(game.winning_sequence, guess)
     game.current_guess += 1
     game.remaining_guess_count -= 1
     if results['red'] == game.cols:

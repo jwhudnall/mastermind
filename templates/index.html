@@ -12,16 +12,15 @@
   <h1>Mastermind</h1>
   {% if game %}
 
-  <p>{{game.winning_numbers}}</p>
+  <p>{{game.winning_sequence}}</p>
   <h2>Remaining Guesses: <span id="numGuessesLeft">{{game.remaining_guess_count}}</span></h2>
 
   <table>
     <!-- Computer Answers -->
     <tr>
-      <td><span id="actual-1">?</span></td>
-      <td><span id="actual-2">?</span></td>
-      <td><span id="actual-3">?</span></td>
-      <td><span id="actual-4">?</span></td>
+      {% for n in range(game.cols) %}
+      <td><span id="actual-{{n}}">?</span></td>
+      {% endfor %}
     </tr>
     <!-- Dynamic population of game rows/cols -->
     {% for row in range(game.rows,0,-1) %}

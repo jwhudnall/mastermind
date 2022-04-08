@@ -84,8 +84,9 @@ const decrementGuessCount = () => {
   $("#numGuessesLeft").text(currentVal - 1);
 };
 
-const handleGameWin = () => {
+const handleGameWin = (winningSequence) => {
   submitGuessBtn.prop("hidden", true);
+  showWinningSequence(winningSequence);
   alert("Congratulations, you win!");
 };
 
@@ -96,13 +97,22 @@ const handleGameLoss = () => {
 
 const checkForGameOver = (res) => {
   if (res.game.game_over) {
-    handleGameWin();
+    handleGameWin(res.game.winning_sequence);
     return true;
   } else if (res.game.remaining_guess_count === 0) {
     handleGameLoss();
     return true;
   }
   return false;
+};
+
+const showWinningSequence = (winningSequence) => {
+  for (let i = 0; i < winningSequence.length; i++) {
+    const value = winningSequence[i];
+    $(`#actual-${i}`).fadeOut(function () {
+      $(this).text(value).fadeIn(1500);
+    });
+  }
 };
 
 submitGuessBtn.click(handleGuess);
