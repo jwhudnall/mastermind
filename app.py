@@ -19,6 +19,16 @@ class Mastermind:
   def __repr__(self):
     return f'<Mastermind rows={self.rows} cols={self.cols}>'
 
+  def serialize(self):
+    return {
+      "rows": self.rows,
+      "cols": self.cols,
+      "winning_numbers": self.winning_numbers,
+      "remaining_guess_count": self.remaining_guess_count,
+      "current_guess": self.current_guess,
+      "game_over": self.game_over
+      }
+
   @classmethod
   def get_numbers(self, count=4):
     '''
@@ -102,6 +112,7 @@ def handle_guess():
       'results': results,
       'game_over':game.game_over,
       'current_guess': game.current_guess,
-      'remaining_guess_count': game.remaining_guess_count
+      'remaining_guess_count': game.remaining_guess_count,
+      'game': game.serialize()
       })
 
