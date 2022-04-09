@@ -84,7 +84,7 @@
   <table>
     <tbody>
       <tr>
-        {% for n in range(8) %}
+        {% for n in range(0, game.colors) %}
         <td>
           <a>
             <img src="/static/images/guess-choices/peg{{n}}.gif" id="{{n}}" class="draggable" width="32" height="32"
@@ -102,6 +102,8 @@
     <input type="number" id="num_cols" name="num_cols" min="4" max="8" value="{{game.cols}}">
     <label for="num_rows">Guess Attempts</label>
     <input type="number" id="num_rows" name="num_rows" min="1" max="15" value="{{game.rows}}">
+    <label for="num_colors">Peg Colors</label>
+    <input type="number" id="num_colors" name="num_colors" min="2" max="7" value="{{game.colors}}">
     <button>New Game</button>
   </form>
 
