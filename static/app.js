@@ -1,15 +1,15 @@
-// const row10Vals = $("#row10 td div input");
+// Refactor out?
 const submitGuessBtn = $(".submitGuessBtn");
 
 const handleGuess = async function () {
-  const rowNum = parseInt(this.id.split("-")[1]);
-  const inputs = $(`#row${rowNum} td div input`);
+  const inputs = $("[data-dropped]");
   const values = $.map(inputs, function (val) {
-    return val.value;
+    return val.dataset.dropped;
   });
   const JSValues = $.makeArray(values);
   const res = await sendGuessToServer(JSValues);
   if (res) {
+    const rowNum = res.game.current_guess - 1;
     provideFeedback(rowNum, res.results);
     disableRow(rowNum);
     const gameIsOver = checkForGameOver(res);
@@ -19,6 +19,9 @@ const handleGuess = async function () {
     }
   }
 };
+
+// Grab all droppables to isolate current row
+// After a peg is dropped, add a data-selected attribute to the target
 
 const sendGuessToServer = async function (guessList) {
   try {
@@ -63,18 +66,25 @@ const provideFeedback = (curRow, res) => {
 };
 
 const showNextRow = (row) => {
-  const inputs = $(`#row${row} td div input`);
-  inputs.each(function () {
-    $(this).prop("disabled", false);
+  $(`#row${row} td div`).each(function () {
+    $(this).addClass("droppable");
   });
+  // Add back event listeners for droppable
+  $(".droppable").on("dragover", dragOver).off("drop", drop);
   $(`#row-${row}-Btn`).show();
+  setListeners();
 };
 
 const disableRow = (curRow) => {
-  const currInputs = $(`#row${curRow} td div input`);
+  curRow = parseInt(curRow);
+  // Remove event listeners for droppable divs
+  $(".droppable").unbind("dragover", dragOver);
+  $(".droppable").unbind("drop", drop);
 
-  currInputs.each(function () {
-    $(this).prop("disabled", true);
+  $("[data-dropped]").each(function () {
+    $(this).removeClass("dropped");
+    $(this).removeClass("droppable");
+    $(this).removeAttr("data-dropped");
   });
   $(`#row-${curRow}-Btn`).hide();
 };
@@ -110,25 +120,59 @@ const showWinningSequence = (winningSequence) => {
   for (let i = 0; i < winningSequence.length; i++) {
     const value = winningSequence[i];
     $(`#actual-${i}`).fadeOut(function () {
-      $(this).text(value).fadeIn(1500);
+      // $(this).text(value).fadeIn(1500);
+      $(this)
+        .css({ "background-image": `url('../static/images/guess-choices/peg${value}.gif')` })
+        .fadeIn(1500);
     });
   }
 };
 
 submitGuessBtn.click(handleGuess);
 
-// Drag Events
-const draggableElements = document.querySelectorAll(".draggable");
-const droppableElements = document.querySelectorAll(".droppable");
+// Drag Events TODO: Change to JQUERY
+// const draggableElements = document.querySelectorAll(".draggable");
+// const droppableElements = document.querySelectorAll(".droppable");
 
-draggableElements.forEach((el) => {
-  el.addEventListener("dragstart", dragStart);
+// draggableElements.forEach((el) => {
+//   el.addEventListener("dragstart", dragStart);
+// });
+
+// droppableElements.forEach((el) => {
+//   el.addEventListener("dragover", dragOver);
+//   el.addEventListener("drop", drop);
+// });
+$(document).ready(function () {
+  setListeners();
 });
 
-droppableElements.forEach((el) => {
-  el.addEventListener("dragover", dragOver);
-  el.addEventListener("drop", drop);
-});
+const removeListeners = () => {
+  const draggableElements = document.querySelectorAll(".draggable");
+  const droppableElements = document.querySelectorAll(".droppable");
+
+  draggableElements.forEach((el) => {
+    el.removeEventListener("dragstart", dragStart);
+  });
+
+  droppableElements.forEach((el) => {
+    el.removeEventListener("dragover", dragOver);
+    el.removeEventListener("drop", drop);
+  });
+};
+
+const setListeners = () => {
+  const draggableElements = document.querySelectorAll(".draggable");
+  const droppableElements = document.querySelectorAll(".droppable");
+
+  draggableElements.forEach((el) => {
+    el.addEventListener("dragstart", dragStart);
+  });
+
+  droppableElements.forEach((el) => {
+    el.addEventListener("dragover", dragOver);
+    el.addEventListener("drop", drop);
+  });
+};
 
 function dragStart(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
@@ -138,8 +182,10 @@ function dragOver(e) {
   e.preventDefault();
 }
 
+// Drops peg into game slot, adding a data-attribute with the numerical value
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
   ev.target.style.backgroundImage = `url('../static/images/guess-choices/peg${data}.gif')`;
+  ev.target.dataset.dropped = data;
 }

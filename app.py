@@ -96,6 +96,7 @@ def display_game():
     num_cols = int(request.form.get('num_cols', None))
     num_rows = int(request.form.get('num_rows', None))
     global_list['game'] =  Mastermind(rows=num_rows, cols=num_cols)
+    print(f'New game instantiated! Nums: {game.winning_sequence}')
     return render_template('index.html', game=game)
 
 

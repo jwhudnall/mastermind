@@ -5,13 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/app.css">
   <title>Document</title>
 </head>
 
 <body>
   <h1>Mastermind</h1>
   {% if game %}
-
   <p>{{game.winning_sequence}}</p>
   <h2>Remaining Guesses: <span id="numGuessesLeft">{{game.remaining_guess_count}}</span></h2>
 
@@ -19,7 +19,11 @@
     <!-- Computer Answers -->
     <tr>
       {% for n in range(game.cols) %}
-      <td><span id="actual-{{n}}">?</span></td>
+      <td>
+        <div id="actual-{{n}}" {% if row==1 %}class="droppable" {% endif %}
+          style="height: 32px; width: 32px; background-image: url('../static/images/question-mark.png'); background-size: cover;">
+        </div>
+      </td>
       {% endfor %}
     </tr>
     <!-- Dynamic population of game rows/cols -->
@@ -27,11 +31,9 @@
     <tr id="row{{row}}">
       {% for col in range(game.cols,0,-1) %}
       <td>
-        {% if row == 1 %}
-        <div><input type="number" min="0" max="7" required></div>
-        {% else %}
-        <div><input type="number" min="0" max="7" required disabled></div>
-        {% endif %}
+        <div id="row{{row}}-col{{col}}" {% if row==1 %}class="droppable" {% endif %}
+          style="height: 32px; width: 32px; background-image: url('../static/images/result-circle-empty.png'); background-size: cover;">
+        </div>
       </td>
       {% endfor %}
       <td>
@@ -73,10 +75,6 @@
 
   </table>
   {% endif %}
-
-  <div id="div1" class="droppable"
-    style="height: 32px; width: 32px; background-image: url('../static/images/result-circle-black.png')">
-  </div>
 
   <!-- Player Peg Selection -->
   <table>
