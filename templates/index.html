@@ -11,6 +11,10 @@
 
 <body>
   <h1>Mastermind</h1>
+  <p>Welcome to Mastermind! Starting with the bottom row, drag pegs onto the board, submit your guess and see
+    if you can crack the code! You can change your sequence by dragging a different color atop your previous choice.
+    Good luck!
+  </p>
   {% if game %}
   <p>{{game.winning_sequence}}</p>
   <h2>Remaining Guesses: <span id="numGuessesLeft">{{game.remaining_guess_count}}</span></h2>
