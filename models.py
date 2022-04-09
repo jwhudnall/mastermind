@@ -48,6 +48,7 @@ class Mastermind:
     num_list = text.split('\n')[0:-1] # list of numbers, as strings
     return num_list
 
+  @classmethod
   def check_guess(self, actual, guess):
     '''Compares each value in the actual, guess lists for equality. Returns feedback'''
     key = {
