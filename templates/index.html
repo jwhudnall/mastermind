@@ -20,6 +20,31 @@
   <p>{{game.winning_sequence}}</p>
   <h2>Remaining Guesses: <span id="numGuessesLeft">{{game.remaining_guess_count}}</span></h2>
 
+  <!-- Result Peg Explanation Table -->
+  <p>Result Pegs Explained</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Color</th>
+        <th>Representation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>red</td>
+        <td>1 Piece is the correct color, in the correct position</td>
+      </tr>
+      <tr>
+        <td>white</td>
+        <td>1 Piece is the correct color, in the wrong position</td>
+      </tr>
+      <tr>
+        <td>black</td>
+        <td>1 piece of incorrect color and position.</td>
+      </tr>
+    </tbody>
+  </table>
+
   <table>
     <!-- Computer Answers -->
     <tr>
@@ -82,6 +107,7 @@
   {% endif %}
 
   <!-- Player Peg Selection -->
+  <p>Drag pieces onto the game board:</p>
   <table>
     <tbody>
       <tr>
