@@ -87,8 +87,8 @@
         {% for n in range(0, game.colors) %}
         <td>
           <a>
-            <img src="/static/images/guess-choices/peg{{n}}.gif" id="{{n}}" class="draggable" width="32" height="32"
-              draggable="true">
+            <img src="/static/images/guess-choices/peg{{n}}.gif" data-val="{{n}}" class="draggable" width="32"
+              height="32" draggable="true">
           </a>
         </td>
         {% endfor %}

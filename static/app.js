@@ -175,7 +175,7 @@ const setListeners = () => {
 };
 
 function dragStart(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
+  ev.dataTransfer.setData("text", ev.target.dataset.val);
 }
 
 function dragOver(e) {
