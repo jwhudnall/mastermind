@@ -30,23 +30,18 @@ class TestHelperFunctions(TestCase):
       game = Mastermind()
 
       non_int_validation = game.validate_guess_inputs(['1','invalid', '3', '4'])
-      self.assertTrue('status' in non_int_validation)
       self.assertTrue('wasn\'t castable to a number' in non_int_validation['error'])
 
       below_threshold_validation = game.validate_guess_inputs(['1','-3', '3', '4'])
-      self.assertTrue('status' in below_threshold_validation)
       self.assertTrue('above or below the specified game parameters' in below_threshold_validation['error'])
 
       above_threshold_validation = game.validate_guess_inputs(['1','12', '3', '4'])
-      self.assertTrue('status' in above_threshold_validation)
       self.assertTrue('above or below the specified game parameters' in above_threshold_validation['error'])
 
       above_col_threshold_validation = game.validate_guess_inputs(['1','2', '3', '4', '5'])
-      self.assertTrue('status' in above_col_threshold_validation)
       self.assertTrue('values must equal Game' in above_col_threshold_validation['error'])
 
       below_col_threshold_validation = game.validate_guess_inputs(['1','2', '3'])
-      self.assertTrue('status' in below_col_threshold_validation)
       self.assertTrue('values must equal Game' in below_col_threshold_validation['error'])
 
 
