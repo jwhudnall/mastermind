@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, flash
 from models import Mastermind
+from helpers import validate_guess_inputs
 
 app = Flask(__name__)
 game = Mastermind()
@@ -15,6 +16,11 @@ if app.config["DEBUG"]:
 
 @app.route('/', methods=['GET', 'POST'])
 def display_game():
+  '''
+  Primary game route. Player-defined game parameters are received as POST requests,
+  wherein the global game variable is updated.
+  '''
+
   if request.method == 'GET':
     return render_template('index.html', game=game)
   else:
@@ -23,20 +29,20 @@ def display_game():
     num_rows = int(request.form.get('num_rows', None))
     num_colors = int(request.form.get('num_colors', None))
     global_list['game'] =  Mastermind(rows=num_rows, cols=num_cols, colors=num_colors)
-    print(f'New game instantiated! Nums: {game.winning_sequence}')
     return render_template('index.html', game=game)
-
 
 @app.route("/api/guess", methods=["POST"])
 def handle_guess():
   '''
   Receives and validates guess from the client.
   '''
-  guess = request.json['guess']['guessList']
-  filtered = [n for n in guess if n != '']
 
-  if (len(filtered) != game.cols):
-    return jsonify(error='Guess values must equal Game columns.')
+  guess = request.json['guess']['guessList']
+  # Server-side guess input validation:
+  response_if_invalid = validate_guess_inputs(guess, game)
+
+  if response_if_invalid:
+    return response_if_invalid
   else:
     results = game.check_guess(game.winning_sequence, guess)
     game.current_guess += 1
@@ -46,9 +52,6 @@ def handle_guess():
 
     return jsonify({
       'results': results,
-      'game_over':game.game_over,
-      'current_guess': game.current_guess,
-      'remaining_guess_count': game.remaining_guess_count,
       'game': game.serialize()
       })
 

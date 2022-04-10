@@ -7,7 +7,7 @@ const handleGuess = async function () {
     return val.dataset.dropped;
   });
   const JSValues = $.makeArray(values);
-  const res = await sendGuessToServer(JSValues);
+  const res = await sendGuessToServer(values);
   if (res) {
     const rowNum = res.game.current_guess - 1;
     provideFeedback(rowNum, res.results);
