@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify, flash
 from models import Mastermind
-from helpers import validate_guess_inputs
 
 app = Flask(__name__)
 game = Mastermind()
@@ -38,8 +37,7 @@ def handle_guess():
   '''
 
   guess = request.json['guess']['guessList']
-  # Server-side guess input validation:
-  response_if_invalid = validate_guess_inputs(guess, game)
+  response_if_invalid = game.validate_guess_inputs(guess)
 
   if response_if_invalid:
     return response_if_invalid

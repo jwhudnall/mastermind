@@ -6,7 +6,7 @@ const handleGuess = async function () {
   const values = $.map(inputs, function (val) {
     return val.dataset.dropped;
   });
-  const JSValues = $.makeArray(values);
+  // const JSValues = $.makeArray(values);
   const res = await sendGuessToServer(values);
   if (res) {
     const rowNum = res.game.current_guess - 1;

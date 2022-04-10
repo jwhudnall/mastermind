@@ -2,6 +2,7 @@
 # Primary Game Class
 ###################
 import requests
+from flask import jsonify
 
 class Mastermind:
   def __init__(self, rows=10, cols=4, colors=8):
@@ -24,6 +25,7 @@ class Mastermind:
       "winning_sequence": self.winning_sequence,
       "remaining_guess_count": self.remaining_guess_count,
       "current_guess": self.current_guess,
+      "colors": self.colors,
       "game_over": self.game_over
       }
 
@@ -47,6 +49,7 @@ class Mastermind:
     text = res.text
     num_list = text.split('\n')[0:-1] # list of numbers, as strings
     return num_list
+
 
   @classmethod
   def check_guess(self, actual, guess):
@@ -77,3 +80,29 @@ class Mastermind:
         key['blank'] = key['blank'] + 1
 
     return key
+
+
+  def validate_guess_inputs(self, guess):
+    '''Input validation. Checks if any values aren't castable to numbers, or are out of range Returns a JSON response with an error key indicating
+    the first failed check, if present. If all guess inputs are valid, returns False.
+
+    Accepts:
+        - guess: List of numerical strings (ex: [['1','2','3','4']])
+        - game: Mastermind Class instance.
+    Returns:
+        - False if validation passes, else JSON response with error key indicating issue.
+    '''
+    # Remove empty game slots
+    filtered = [n for n in guess if n != '']
+
+    try:
+      # Checks range (plus positive non-numerical)
+      not_in_range = any(int(val) < 0 or int(val) > self.colors - 1 for val in guess)
+    except ValueError:
+      return {'error':'One or more guess values wasn\'t castable to a number.', 'status': 400}
+
+    if len(filtered) != self.cols:
+      return {'error':'Guess values must equal Game columns.', 'status': 400}
+    elif not_in_range:
+      return {'error':'One or more guess values were above or below the specified game parameters.', 'status': 400}
+    return False
