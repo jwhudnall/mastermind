@@ -100,8 +100,9 @@ const handleGameWin = (winningSequence) => {
   alert("Congratulations, you win!");
 };
 
-const handleGameLoss = () => {
+const handleGameLoss = (winningSequence) => {
   submitGuessBtn.prop("hidden", true);
+  showWinningSequence(winningSequence);
   alert("Game Over. I'm sure you'll get it next time!");
 };
 
@@ -110,7 +111,7 @@ const checkForGameOver = (res) => {
     handleGameWin(res.game.winning_sequence);
     return true;
   } else if (res.game.remaining_guess_count === 0) {
-    handleGameLoss();
+    handleGameLoss(res.game.winning_sequence);
     return true;
   }
   return false;
