@@ -36,11 +36,11 @@ def handle_guess():
   Receives and validates guess from the client.
   '''
 
-  guess = request.json['guess']['guessList']
+  guess = request.json['guess']
   response_if_invalid = game.validate_guess_inputs(guess)
 
   if response_if_invalid:
-    return response_if_invalid
+    return jsonify(response_if_invalid), 400
   else:
     results = game.check_guess(game.winning_sequence, guess)
     game.current_guess += 1

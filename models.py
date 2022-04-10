@@ -99,10 +99,10 @@ class Mastermind:
       # Checks range (plus positive non-numerical)
       not_in_range = any(int(val) < 0 or int(val) > self.colors - 1 for val in guess)
     except ValueError:
-      return {'error':'One or more guess values wasn\'t castable to a number.', 'status': 400}
+      return {'error':'One or more guess values wasn\'t castable to a number.'}
 
     if len(filtered) != self.cols:
-      return {'error':'Guess values must equal Game columns.', 'status': 400}
+      return {'error':'Guess values must equal Game columns.'}
     elif not_in_range:
-      return {'error':'One or more guess values were above or below the specified game parameters.', 'status': 400}
+      return {'error':'One or more guess values were above or below the specified game parameters.'}
     return False
