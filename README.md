@@ -5,7 +5,7 @@ This is a code-breaking game where the user players a fictitious opponent.
 ## Getting Started
 
 - Have latest Python. Build from requirements.txt.
-- Run tests
+- Tests can be run via `python -m unittest`
 - Run server
 
 ## Gameplay
