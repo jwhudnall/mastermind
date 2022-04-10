@@ -23,11 +23,11 @@ const handleGuess = async function () {
   }
 };
 
-const sendGuessToServer = async function (guessList) {
+const sendGuessToServer = async function (guess) {
   try {
     const res = await axios.post(
       "/api/guess",
-      { guess: { guessList } },
+      { guess },
       { headers: { "content-type": "application/json" } }
     );
 
