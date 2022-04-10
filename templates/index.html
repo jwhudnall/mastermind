@@ -111,7 +111,9 @@
   <table>
     <tbody>
       <tr>
-        {% for n in range(0, game.colors) %}
+        <!-- Playable pegs spill over into second <tr> if colors > columns -->
+        {% with stop_val = [game.cols, game.colors]|min %}
+        {% for n in range(stop_val) %}
         <td>
           <a>
             <img src="/static/images/guess-choices/peg{{n}}.gif" data-val="{{n}}" class="draggable" width="32"
@@ -120,10 +122,23 @@
         </td>
         {% endfor %}
       </tr>
+      {% if game.colors > stop_val %}
+      <tr>
+        {% for n in range(stop_val, game.colors) %}
+        <td>
+          <a>
+            <img src="/static/images/guess-choices/peg{{n}}.gif" data-val="{{n}}" class="draggable" width="32"
+              height="32" draggable="true">
+          </a>
+        </td>
+        {% endfor %}
+      </tr>
+      {% endif %}
+      {% endwith %}
     </tbody>
   </table>
 
-  <!-- Game Form -->
+  <!-- Game Modification Form -->
   <form method="POST">
     <label for="num_cols">Sequence Length</label>
     <input type="number" id="num_cols" name="num_cols" min="4" max="8" value="{{game.cols}}">
