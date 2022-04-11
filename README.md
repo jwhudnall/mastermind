@@ -1,12 +1,14 @@
 # Mastermind Game
 
-This is a code-breaking game where the user players a fictitious opponent.
+https://user-images.githubusercontent.com/50386174/162826068-d80db855-11e0-44d7-967f-704d8b06a8de.mov
+
+This is a code-breaking game where the user players a fictitious opponent. The "How to Play" modal explains it best: 
+![How to Play Modal](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/how-to-play.png?raw=true)
 
 ## Getting Started
-
 To run the game, you should have the latest version of [Python](https://www.python.org/downloads/) installed (including pip), as well as [git](https://git-scm.com/downloads).
 
-1. From the command line, clone the Mastermind codebase to your preferred location: `git clone https://github.com/jwhudnall/mastermind.git`.
+1. From the command line, clone the Mastermind codebase to your preferred location by running: `git clone https://github.com/jwhudnall/mastermind.git`.
 2. (Recommended) Within the cloned folder, create a virtual environment using `venv`. From the command line, navigate to your desired location and run: `python -m venv venv`.
 
    - **Mac Users:** Activate this environment by running: `source venv/bin/activate`.
