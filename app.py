@@ -22,7 +22,7 @@ def display_game():
     '''
 
     if request.method == 'GET':
-        return render_template('index.html', game=game)
+        return render_template('index.html', game=game, gameboard=game.serialize())
     else:
         global_list = globals()
         num_cols = int(request.form.get('num_cols', None))
@@ -30,7 +30,7 @@ def display_game():
         num_colors = int(request.form.get('num_colors', None))
         global_list['game'] = Mastermind(
             rows=num_rows, cols=num_cols, colors=num_colors)
-        return render_template('index.html', game=game)
+        return render_template('index.html', game=game, gameboard=game.serialize())
 
 
 @app.route("/api/guess", methods=["POST"])

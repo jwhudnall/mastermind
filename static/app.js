@@ -1,9 +1,37 @@
-$(document).ready(function () {
-  setListeners();
-  submitGuessBtn.click(handleGuess);
-});
-
 const submitGuessBtn = $(".submitGuessBtn");
+const invalidGuessModal = new Modal(document.getElementById("popup-modal"));
+
+const handleGuess = async function () {
+  const values = getPlayedPieces();
+  if (hasInvalidGuessLength(values)) {
+    // return alert("All board slots must be selected prior to guess submission!");
+    return invalidGuessModal.show();
+  }
+  const res = await sendGuessToServer(values);
+  if (res) {
+    const rowNum = res.game.current_guess - 1;
+    provideFeedback(rowNum, res.results);
+    addTooltips("red", "white");
+    disableRow(rowNum);
+    const gameIsOver = checkForGameOver(res);
+    if (!gameIsOver) {
+      showNextRow(rowNum + 1);
+      decrementGuessCount();
+    }
+  }
+};
+
+const hasInvalidGuessLength = (values) => {
+  return values.length !== gameBoard.cols;
+};
+
+const getPlayedPieces = () => {
+  const inputs = $("[data-dropped]");
+  const values = $.map(inputs, function (val) {
+    return val.dataset.dropped;
+  });
+  return values;
+};
 
 const sendGuessToServer = async function (guess) {
   try {
@@ -23,25 +51,6 @@ const sendGuessToServer = async function (guess) {
     }
   } catch (e) {
     alert(`Something went wrong translating your guess. Error info: ${e}`);
-  }
-};
-
-const handleGuess = async function () {
-  const inputs = $("[data-dropped]");
-  const values = $.map(inputs, function (val) {
-    return val.dataset.dropped;
-  });
-  const res = await sendGuessToServer(values);
-  if (res) {
-    const rowNum = res.game.current_guess - 1;
-    provideFeedback(rowNum, res.results);
-    addTooltips("red", "white");
-    disableRow(rowNum);
-    const gameIsOver = checkForGameOver(res);
-    if (!gameIsOver) {
-      showNextRow(rowNum + 1);
-      decrementGuessCount();
-    }
   }
 };
 
@@ -170,3 +179,8 @@ const addTooltips = function () {
     });
   }
 };
+
+$(document).ready(function () {
+  setListeners();
+  submitGuessBtn.click(handleGuess);
+});
