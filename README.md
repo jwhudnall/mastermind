@@ -2,7 +2,7 @@
 
 https://user-images.githubusercontent.com/50386174/162826068-d80db855-11e0-44d7-967f-704d8b06a8de.mov
 
-This is a code-breaking game where the user players a fictitious opponent. The "How to Play" modal explains it best: 
+This is a code-breaking game where the user plays a fictitious opponent. The "How to Play" modal explains it best: 
 ![How to Play Modal](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/how-to-play.png?raw=true)
 
 ## Getting Started
@@ -24,22 +24,15 @@ To run the game, you should have the latest version of [Python](https://www.pyth
 
 ## Additional Features
 After satisfying the project requirements, I implemented the following additional features:
-1. Dynamic gameboard, capabilities. By clicking the **New Game** button, users can specify the code sequence length (columns), guess attempts (rows), as well as available colors count.
+1. Dynamic gameboard configuration to increase/decrease game difficulty. By clicking the **New Game** button, users can specify the code sequence length (columns), guess attempts (rows), as well as available colors count.
 2. Draggable colored pegs (instead of numbers). The core Random Number API is still used, wherein numbers are translated into colors.
 3. Guess feedback in the form of red and white colored pegs, emulating the real Mastermind game. These are dynamically rendered using Jinja to match the current game's sequence length.
 4. Tooltips were added above feedback pegs. When a user hovers over the red or white pegs, they are reminded of their significance. 
 5. Detailed API response for the `/api/guess` route. Depending on the POST request's body content, the API will return either the requested data, or an error message indicating the issue. 
 6. Popup modals for "How to Play", "New Game", and when the player either wins or loses.
-7. Python tests testing core functionality.
-
-- Dynamic gameboard
-- Colored Pegs (playing pieces)
-- Colored Pegs (guess feedback)
+7. Python tests, testing core functionality and routes.
 
 ## Design Considerations
-Before started, I created a Trello board to map out core functionality and features: [Trello Board](https://trello.com/b/efjqNs5f/mastermind)
-
-- Link trello board
-- Explain check_guess logic
-- Explain Mastermind OOP
-- Explain Flask, jQuery decision?
+- Before started, I created a Trello board to map out core functionality and features: [Trello Board](https://trello.com/b/efjqNs5f/mastermind)
+- I decided to use Flask on the back-end due to my past experience, as well as given the fact that this project was completed with the goal of obtaining a back-end Software Engineering position. JQuery was used for quick prototyping.
+- Early in the project I decided to adopt an OOP approach, implementing a `Mastermind` python class.
