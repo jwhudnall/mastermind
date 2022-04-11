@@ -17,20 +17,27 @@ To run the game, you should have the latest version of [Python](https://www.pyth
    When you're done, you can deactivate the environment via `deactivate`.
 
 3. If you're using a virtual environment, ensure that it is active before proceeding. Install the dependencies via `pip install -r requirements.txt`.
-4. Tests can be run from the command line via `python -m unittest`. 5. Start the game via `flask run`. (If you wish to use an alternate port, run `flask run -p desired_port`). 6. In your browser, copy/paste the following link: `localhost:5002` (where _5002_ is the port specified after initiating `flask run`).
-
-## Gameplay
-
-- Explain the game
-- Video Link: https://youtu.be/nXwe7Sl5eTo
+4. Tests can be run from the command line via `python -m unittest`. 
+  - ![tests](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/running-tests.png?raw=true)
+6. Start the game via `flask run`. (If you wish to use an alternate port, run `flask run -p desired_port`). 
+7. In your browser, copy/paste the following link: `localhost:5002` (where _5002_ is the port specified after initiating `flask run`).
 
 ## Additional Features
+After satisfying the project requirements, I implemented the following additional features:
+1. Dynamic gameboard, capabilities. By clicking the **New Game** button, users can specify the code sequence length (columns), guess attempts (rows), as well as available colors count.
+2. Draggable colored pegs (instead of numbers). The core Random Number API is still used, wherein numbers are translated into colors.
+3. Guess feedback in the form of red and white colored pegs, emulating the real Mastermind game. These are dynamically rendered using Jinja to match the current game's sequence length.
+4. Tooltips were added above feedback pegs. When a user hovers over the red or white pegs, they are reminded of their significance. 
+5. Detailed API response for the `/api/guess` route. Depending on the POST request's body content, the API will return either the requested data, or an error message indicating the issue. 
+6. Popup modals for "How to Play", "New Game", and when the player either wins or loses.
+7. Python tests testing core functionality.
 
 - Dynamic gameboard
 - Colored Pegs (playing pieces)
 - Colored Pegs (guess feedback)
 
 ## Design Considerations
+Before started, I created a Trello board to map out core functionality and features: [Trello Board](https://trello.com/b/efjqNs5f/mastermind)
 
 - Link trello board
 - Explain check_guess logic
