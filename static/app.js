@@ -28,6 +28,7 @@ const sendGuessToServer = async function (guess) {
 };
 
 const handleGuess = async function () {
+  console.log("Clicked!");
   const inputs = $("[data-dropped]");
   const values = $.map(inputs, function (val) {
     return val.dataset.dropped;
