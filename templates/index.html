@@ -18,11 +18,19 @@
     Mastermind</h1>
 
   <div class="max-w-lg mx-auto">
-    <p class="mt-4 text-lg">Welcome to Mastermind! Starting with the bottom row, drag pegs onto the board, submit your
-      guess and see if you can crack the code! You can change your sequence by dragging a different color atop your
-      previous choice.
-      Good luck!
-    </p>
+    <!-- Modal Buttons -->
+    <button
+      class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      type="button" data-modal-toggle="new-game-modal">
+      New Game
+    </button>
+
+    <button
+      class="block w-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      type="button" data-modal-toggle="information-modal">
+      How to Play
+    </button>
+
   </div>
   {% if game %}
   <p class="text-center">{{game.winning_sequence}}</p>
@@ -45,7 +53,7 @@
       </tr>
       <!-- Dynamic population of game rows/cols -->
       {% for row in range(game.rows,0,-1) %}
-      <tr id="row{{row}}">
+      <tr id="row{{row}}" {% if row==1 %}class="bg-slate-400" {% endif %}>
         {% for col in range(game.cols,0,-1) %}
         <td>
           <div id="row{{row}}-col{{col}}" {% if row==1 %}class="droppable" {% endif %}
@@ -125,48 +133,153 @@
     </table>
   </div>
 
-  <!-- Result Peg Explanation Table -->
-  <div class="w-1/2 mx-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left text-gray-500">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-200">
-        <tr>
-          <th scope="col" class="px-6 py-3">
-            Color
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Represents
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="bg-gray-100 border-b">
-          <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
-            <div class="w-4 h-4 rounded-3xl bg-red-600">
-            </div>
-          </th>
-          <td class="px-2 py-1">
-            1 Piece has the correct color and position
-          </td>
-        </tr>
-        <tr class="bg-gray-100 border-b">
-          <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
-            <div class="w-4 h-4 rounded-3xl bg-white">
-          </th>
-          <td class="px-2 py-1">
-            1 Piece has the correct color, but is in the wrong position
-          </td>
-        </tr>
-        <tr class="bg-gray-100">
-          <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
-            <div class="w-4 h-4 rounded-3xl bg-black">
-          </th>
-          <td class="px-2 py-1">
-            1 piece has both incorrect color and position
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- ** Modals ** -->
+  <!-- New Game Modal -->
+  <div id="new-game-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
+    <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="flex justify-end p-2">
+          <button type="button"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+            data-modal-toggle="new-game-modal">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- ** Game Modification Form ** -->
+        <form class="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8" method="POST">
+          <h3 class="text-xl font-medium text-gray-900 dark:text-white">Start a New Game</h3>
+          <div>
+            <!-- Sequence Length -->
+            <label for="num_cols" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Sequence
+              Length</label>
+            <input type="number" name="num_cols" id="num_cols" min="4" max="8" value="{{game.cols}}"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required="true">
+          </div>
+          <div>
+            <!-- Guess Attempts -->
+            <label for="num_rows" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Number of
+              Guesses</label>
+            <input type="number" name="num_rows" id="num_rows" min="1" max="15" value="{{game.rows}}"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required="true">
+          </div>
+          <div>
+            <!-- Peg Colors-->
+            <label for="num_colors" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Number of
+              Peg Colors</label>
+            <input type="number" name="num_colors" id="num_colors" min="2" max="8" value="{{game.colors}}"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required="true">
+          </div>
+
+          <button type="submit"
+            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create
+            New Game</button>
+        </form>
+      </div>
+    </div>
   </div>
+
+  <!-- Information Modal -->
+  <div id="information-modal" tabindex="-1"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+    <div class="relative p-4 w-full max-w-4xl h-full md:h-auto">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <!-- Modal header -->
+        <div class="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
+          <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+            How to Play
+          </h3>
+          <button type="button"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-toggle="information-modal">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="p-6 space-y-6">
+          <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            Welcome to Mastermind! The goal is to guess the winning sequence by dragging pegs onto the board (starting
+            at the bottom) and
+            comparing feedback between guesses. After filling each slot of the current row you will be able to submit
+            your guess.
+          </p>
+          <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            After each guess, you will receive feedback in the form of red, white and black pegs in the right-most
+            column - one for each peg slot. Here's what they represent:
+          </p>
+          <!-- Result Peg Explanation Table -->
+          <div class="w-1/2 mx-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                <tr>
+                  <th scope="col" class="px-6 py-3">
+                    Color
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Represents
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="bg-gray-100 border-b">
+                  <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
+                    <div class="w-4 h-4 rounded-3xl bg-red-600">
+                    </div>
+                  </th>
+                  <td class="px-2 py-1">
+                    1 Piece has the correct color and position
+                  </td>
+                </tr>
+                <tr class="bg-gray-100 border-b">
+                  <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
+                    <div class="w-4 h-4 rounded-3xl bg-white">
+                  </th>
+                  <td class="px-2 py-1">
+                    1 Piece has the correct color, but is in the wrong position
+                  </td>
+                </tr>
+                <tr class="bg-gray-100">
+                  <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
+                    <div class="w-4 h-4 rounded-3xl bg-black">
+                  </th>
+                  <td class="px-2 py-1">
+                    1 piece has both incorrect color and position
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            You can change your sequence by dragging a different color atop your previous
+            choice before submitting. Good luck!
+          </p>
+        </div>
+        <!-- Modal footer -->
+        <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+          <button data-modal-toggle="information-modal" type="button"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
+            Got it!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- End Modals -->
 
   <!-- Hover Button -->
   <button data-tooltip-target="tooltip-red" type="button"
@@ -184,17 +297,6 @@
     1 Piece is the correct color, in the correct position
     <div class="tooltip-arrow" data-popper-arrow></div>
   </div>
-
-  <!-- Game Modification Form -->
-  <form method="POST">
-    <label for="num_cols">Sequence Length</label>
-    <input type="number" id="num_cols" name="num_cols" min="4" max="8" value="{{game.cols}}">
-    <label for="num_rows">Guess Attempts</label>
-    <input type="number" id="num_rows" name="num_rows" min="1" max="15" value="{{game.rows}}">
-    <label for="num_colors">Peg Colors</label>
-    <input type="number" id="num_colors" name="num_colors" min="2" max="8" value="{{game.colors}}">
-    <button>New Game</button>
-  </form>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>

@@ -65,13 +65,14 @@ const provideFeedback = (curRow, res) => {
   }
 };
 
-const disableRow = (curRow) => {
+const disableRow = (row) => {
   $("[data-dropped]").each(function () {
     $(this).removeClass("dropped");
     $(this).removeClass("droppable");
     $(this).removeAttr("data-dropped");
   });
-  $(`#row-${curRow}-Btn`).hide();
+  $(`#row-${row}-Btn`).hide();
+  $(`#row${row}`).removeClass("bg-slate-400");
 };
 
 const showNextRow = (row) => {
@@ -79,6 +80,7 @@ const showNextRow = (row) => {
     $(this).addClass("droppable");
   });
   $(`#row-${row}-Btn`).show();
+  $(`#row${row}`).addClass("bg-slate-400");
   setListeners();
 };
 
