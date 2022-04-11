@@ -23,11 +23,11 @@ const handleGuess = async function () {
 };
 
 const hasInvalidGuessLength = (values) => {
-  return values.length !== gameBoard.cols;
+  return values.length < gameBoard.cols;
 };
 
 const getPlayedPieces = () => {
-  const inputs = $("[data-dropped]");
+  const inputs = $(".droppable");
   const values = $.map(inputs, function (val) {
     return val.dataset.dropped;
   });
@@ -81,7 +81,6 @@ const disableRow = (row) => {
     $(this).removeAttr("data-dropped");
   });
   $(`#row${row}`).removeClass("bg-slate-400");
-  // $(`#row${row}Arrow`).hide();
   $(`#row${row}Arrow`).css("display", "none");
 };
 
@@ -90,7 +89,6 @@ const showNextRow = (row) => {
     $(this).addClass("droppable");
   });
   $(`#row${row}`).addClass("bg-slate-400");
-  // $(`#row${row}Arrow`).show();
   $(`#row${row}Arrow`).css("display", "block");
   setListeners();
 };
@@ -167,10 +165,7 @@ function drop(ev) {
   ev.target.dataset.dropped = data;
 }
 
-//
-/** Adds tooltip above result pegs.
- *  ex: addTooltips("red", "white") adds
- */
+// Adds tooltip above result pegs.
 const addTooltips = function () {
   for (let color of arguments) {
     const targetEl = document.getElementById(`tooltip-${color}`);

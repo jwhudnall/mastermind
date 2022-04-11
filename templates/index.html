@@ -267,14 +267,13 @@
         </div>
         <div class="p-6 space-y-6">
           <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            Welcome to Mastermind! The goal is to guess the winning sequence by dragging pegs onto the board (starting
-            at the bottom) and
-            comparing feedback between guesses. After filling each slot of the current row you will be able to submit
-            your guess.
+            Welcome to Mastermind! The goal is to guess the winning sequence by dragging pegs onto the active game board
+            row, comparing your guess feedback with previous guesses and narrowing down possible combinations. After
+            filling each slot of the current row, you will be able to submit your guess.
           </p>
           <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             After each guess, you will receive feedback in the form of red, white and black pegs in the right-most
-            column - one for each peg slot. Here's what they represent:
+            column; one for each peg slot. Here's what they represent:
           </p>
           <div class="w-1/2 mx-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500">
@@ -319,7 +318,8 @@
           </div>
           <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             You can change your sequence by dragging a different color atop your previous
-            choice before submitting. Good luck!
+            choice before submitting. You can also hover over feedback pegs for a reminder of their significance. Good
+            luck!
           </p>
         </div>
         <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
@@ -391,6 +391,10 @@
           <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             Congratulations - you won! Your guess count: <span id="elapsedGuessCount">0</span>.
           </p>
+          <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            For an even greater challenge, increase the sequence length or number of peg colors!
+          </p>
+
 
         </div>
         <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
@@ -410,7 +414,7 @@
           <h3 class="text-xl font-medium text-gray-900 dark:text-white">
             Game Over
           </h3>
-          <button type="button" onclick="playerLossModal.hide()"
+          <button id="playerLossConfirmationBtn" type="button" onclick="playerLossModal.hide()"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
             data-modal-toggle="loss-modal">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
