@@ -5,20 +5,27 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.1/dist/flowbite.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <link rel="stylesheet" href="/static/app.css">
   <link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.jpeg">
   <title>Document</title>
 </head>
 
 <body>
-  <h1>Mastermind</h1>
-  <p>Welcome to Mastermind! Starting with the bottom row, drag pegs onto the board, submit your guess and see
-    if you can crack the code! You can change your sequence by dragging a different color atop your previous choice.
+  <h1 class="mt-56 text-center text-black text-4xl tracking-tight font-extrabold sm:text-6xl lg:mt-56 xl:text-6xl">
+    Mastermind</h1>
+
+  <p class="mt-4 text-lg">Welcome to Mastermind! Starting with the bottom row, drag pegs onto the board, submit your
+    guess and see if you can crack the code! You can change your sequence by dragging a different color atop your
+    previous choice.
     Good luck!
   </p>
   {% if game %}
   <p>{{game.winning_sequence}}</p>
-  <h2>Remaining Guesses: <span id="numGuessesLeft">{{game.remaining_guess_count}}</span></h2>
+  <h2 class="mt-8 text-center text-black text-md tracking-tight font-extrabold sm:text-lg xl:text-xl">Remaining
+    Guesses: <span id="numGuessesLeft" class="italic">{{game.remaining_guess_count}}</span></h2>
 
   <!-- Result Peg Explanation Table -->
   <p>Result Pegs Explained</p>
@@ -150,6 +157,7 @@
   </form>
 
   <!-- Scripts -->
+  <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"
     integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
