@@ -14,7 +14,7 @@
 </head>
 
 <body>
-  <h1 class="mt-56 text-center text-black text-4xl tracking-tight font-extrabold sm:text-6xl lg:mt-56 xl:text-6xl">
+  <h1 class="text-center text-black text-4xl tracking-tight font-extrabold xl:text-6xl">
     Mastermind</h1>
 
   <p class="mt-4 text-lg">Welcome to Mastermind! Starting with the bottom row, drag pegs onto the board, submit your
@@ -52,6 +52,56 @@
     </tbody>
   </table>
 
+  <!-- New Table -->
+
+  <div class="w-1/2 mx-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left text-gray-500">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+        <tr>
+          <th scope="col" class="px-6 py-3">
+            Color
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Represents
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bg-blue-500 border-b">
+          <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
+            <div class="w-8 h-8 rounded-3xl bg-red-800">
+            </div>
+          </th>
+          <td class="px-2 py-1">
+            1 Piece is the correct color, in the correct position
+          </td>
+        </tr>
+        <tr class="bg-blue-500 border-b">
+          <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
+            <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-white.png" width="15" height="15"
+              alt>
+          </th>
+          <td class="px-2 py-1">
+            1 Piece is the correct color, in the wrong position
+          </td>
+        </tr>
+        <tr class="bg-blue-500">
+          <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
+            <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-black.png" width="15" height="15"
+              alt>
+          </th>
+          <td class="px-2 py-1">
+            1 piece of incorrect color and position.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- End New Table -->
+
+
+  <!-- Main Game Board -->
   <table>
     <!-- Computer Answers -->
     <tr>

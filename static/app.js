@@ -5,6 +5,28 @@ $(document).ready(function () {
 
 const submitGuessBtns = $(".submitGuessBtn");
 
+const sendGuessToServer = async function (guess) {
+  console.log(guess);
+  try {
+    const res = await axios.post(
+      "/api/guess",
+      { guess },
+      { headers: { "content-type": "application/json" } }
+    );
+    console.log("Finished res!");
+
+    if (res.data.error) {
+      alert("All inputs are required");
+      return false;
+    } else {
+      console.log(res.data);
+      return res.data;
+    }
+  } catch (e) {
+    alert(`Something went wrong translating your guess. Error info: ${e}`);
+  }
+};
+
 const handleGuess = async function () {
   const inputs = $("[data-dropped]");
   const values = $.map(inputs, function (val) {
@@ -20,26 +42,6 @@ const handleGuess = async function () {
       showNextRow(rowNum + 1);
       decrementGuessCount();
     }
-  }
-};
-
-const sendGuessToServer = async function (guess) {
-  try {
-    const res = await axios.post(
-      "/api/guess",
-      { guess },
-      { headers: { "content-type": "application/json" } }
-    );
-
-    if (res.data.error) {
-      alert("All inputs are required");
-      return false;
-    } else {
-      console.log(res.data);
-      return res.data;
-    }
-  } catch (e) {
-    alert(`Something went wrong translating your guess. Error info: ${e}`);
   }
 };
 

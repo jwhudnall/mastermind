@@ -39,7 +39,7 @@ def handle_guess():
     Receives and validates guess from the client.
     '''
 
-    guess = request.json['guess']
+    guess = request.json.get('guess')
     response_if_invalid = game.validate_guess_inputs(guess)
 
     if response_if_invalid:
