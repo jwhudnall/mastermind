@@ -152,6 +152,10 @@
       </tbody>
     </table>
 
+
+    <h2 class="my-1 text-center text-black text-md tracking-tight font-extrabold sm:text-lg xl:text-xl">Remaining
+      Guesses: <span id="numGuessesLeft" class="italic">{{game.remaining_guess_count}}</span></h2>
+
     <!-- Dismissable Info Alert-->
     <div id="alert-1" class="flex w-1/2 p-1.5 my-1 bg-blue-100 mx-auto rounded-lg" role="alert">
       <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20"
@@ -175,8 +179,7 @@
       </button>
     </div>
 
-    <h2 class="my-1 text-center text-black text-md tracking-tight font-extrabold sm:text-lg xl:text-xl">Remaining
-      Guesses: <span id="numGuessesLeft" class="italic">{{game.remaining_guess_count}}</span></h2>
+    <!-- Button Group  -->
     <div class="w-1/2 mt-1 flex flex-row mx-auto">
       <button
         class="mx-auto mt-1 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
