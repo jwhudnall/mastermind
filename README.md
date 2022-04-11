@@ -47,7 +47,18 @@ After satisfying the project requirements, I implemented the following additiona
    - Invalid value:
      ![invalid-character](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/api-invalid-char.png?raw=true)
 
+   - Invalid length:
+     ![invalid-character](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/api-invalid-length.png?raw=true)
+
 6. Popup modals for "How to Play", "New Game", and when the player either wins or loses.
+
+   - How to Play:
+
+     ![how-to-play](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/how-to-play.png?raw=true)
+
+   - New Game:
+
+     ![new-game](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/new-game-modal.png?raw=true)
 
    - Player Win:
 
@@ -57,7 +68,7 @@ After satisfying the project requirements, I implemented the following additiona
 
      ![player-loss](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/player-loss-modal.png?raw=true)
 
-7. Python tests, testing core functionality and routes.
+7. Python tests, testing core functionality and routes:
 
    - ![tests](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/running-tests.png?raw=true)
 
