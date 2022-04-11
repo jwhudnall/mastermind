@@ -1,10 +1,11 @@
-const submitGuessBtn = $(".submitGuessBtn");
+const submitGuessBtn = $("#submitGuessBtn");
 const invalidGuessModal = new Modal(document.getElementById("popup-modal"));
+const playerWinModal = new Modal(document.getElementById("win-modal"));
+const playerLossModal = new Modal(document.getElementById("loss-modal"));
 
 const handleGuess = async function () {
   const values = getPlayedPieces();
   if (hasInvalidGuessLength(values)) {
-    // return alert("All board slots must be selected prior to guess submission!");
     return invalidGuessModal.show();
   }
   const res = await sendGuessToServer(values);
@@ -14,9 +15,9 @@ const handleGuess = async function () {
     addTooltips("red", "white");
     disableRow(rowNum);
     const gameIsOver = checkForGameOver(res);
+    updateGuessCount();
     if (!gameIsOver) {
       showNextRow(rowNum + 1);
-      decrementGuessCount();
     }
   }
 };
@@ -61,7 +62,6 @@ const provideFeedback = (curRow, res) => {
       const target = $(`#row${curRow}ResultPeg-${curPeg}`);
       target.attr("src", "/static/images/result-circle-red.png");
       target.attr("data-tooltip-target", "tooltip-red");
-      // console.log(`Result peg: ${curPeg} set to RED.`);
       curPeg++;
     }
   }
@@ -69,7 +69,6 @@ const provideFeedback = (curRow, res) => {
     for (let i = 0; i < res.white; i++) {
       const target = $(`#row${curRow}ResultPeg-${curPeg}`);
       target.attr("src", "/static/images/result-circle-white.png");
-      // console.log(`Result peg: ${curPeg} set to WHITE.`);
       curPeg++;
     }
   }
@@ -81,34 +80,38 @@ const disableRow = (row) => {
     $(this).removeClass("droppable");
     $(this).removeAttr("data-dropped");
   });
-  // $(`#row-${row}-Btn`).hide();
   $(`#row${row}`).removeClass("bg-slate-400");
+  // $(`#row${row}Arrow`).hide();
+  $(`#row${row}Arrow`).css("display", "none");
 };
 
 const showNextRow = (row) => {
   $(`#row${row} td div`).each(function () {
     $(this).addClass("droppable");
   });
-  // $(`#row-${row}-Btn`).show();
   $(`#row${row}`).addClass("bg-slate-400");
+  // $(`#row${row}Arrow`).show();
+  $(`#row${row}Arrow`).css("display", "block");
   setListeners();
 };
 
-const decrementGuessCount = () => {
-  const currentVal = parseInt($("#numGuessesLeft").text());
-  $("#numGuessesLeft").text(currentVal - 1);
+const updateGuessCount = () => {
+  const numGuessesLeft = parseInt($("#numGuessesLeft").text());
+  const elapsedGuessCount = parseInt($("#elapsedGuessCount").text());
+  $("#numGuessesLeft").text(numGuessesLeft - 1);
+  $("#elapsedGuessCount").text(elapsedGuessCount + 1);
 };
 
 const handleGameWin = (winningSequence) => {
-  submitGuessBtn.prop("hidden", true);
+  submitGuessBtn.prop("disabled", true);
   showWinningSequence(winningSequence);
-  alert("Congratulations, you win!");
+  playerWinModal.show();
 };
 
 const handleGameLoss = (winningSequence) => {
-  submitGuessBtn.prop("hidden", true);
+  submitGuessBtn.prop("disabled", true);
   showWinningSequence(winningSequence);
-  alert("Game Over. I'm sure you'll get it next time!");
+  playerLossModal.show();
 };
 
 const checkForGameOver = (res) => {
