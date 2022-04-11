@@ -75,5 +75,17 @@ After satisfying the project requirements, I implemented the following additiona
 ## Design Considerations
 
 - Before starting, I created a Trello board to map out core functionality and features: [Trello Board](https://trello.com/b/efjqNs5f/mastermind)
+
 - I decided to use Flask on the back-end due to my past experience, as well as given the fact that this project was completed with the goal of obtaining a back-end Software Engineering position. JQuery was used for quick prototyping.
+
 - Early in the project I decided to adopt an OOP approach, implementing a `Mastermind` python class.
+
+- I landed on an implementation that didn't use cookies or localStorage. Game updates between guesses are conveyed via the `/api/guess` route response.
+
+- Additional Features I wanted to implement, but ran out of time:
+  - Hint feature.
+  - Utilize localStorage for high scores
+  - Implement time aspect (perhaps tied to scores)
+  - Disallow the dropping of pieces in previous rows.
+  - Add Javascript tests.
+  - Edge Case handling: In the event the Random number API fails, I could easily add a python-based random number generator.
