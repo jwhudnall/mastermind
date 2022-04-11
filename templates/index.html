@@ -17,43 +17,19 @@
   <h1 class="text-center text-black text-4xl tracking-tight font-extrabold xl:text-6xl">
     Mastermind</h1>
 
-  <p class="mt-4 text-lg">Welcome to Mastermind! Starting with the bottom row, drag pegs onto the board, submit your
-    guess and see if you can crack the code! You can change your sequence by dragging a different color atop your
-    previous choice.
-    Good luck!
-  </p>
+  <div class="max-w-lg mx-auto">
+    <p class="mt-4 text-lg">Welcome to Mastermind! Starting with the bottom row, drag pegs onto the board, submit your
+      guess and see if you can crack the code! You can change your sequence by dragging a different color atop your
+      previous choice.
+      Good luck!
+    </p>
+  </div>
   {% if game %}
-  <p>{{game.winning_sequence}}</p>
+  <p class="text-center">{{game.winning_sequence}}</p>
   <h2 class="mt-8 text-center text-black text-md tracking-tight font-extrabold sm:text-lg xl:text-xl">Remaining
     Guesses: <span id="numGuessesLeft" class="italic">{{game.remaining_guess_count}}</span></h2>
 
   <!-- Result Peg Explanation Table -->
-  <p>Result Pegs Explained</p>
-  <table>
-    <thead>
-      <tr>
-        <th>Color</th>
-        <th>Representation</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>red</td>
-        <td>1 Piece is the correct color, in the correct position</td>
-      </tr>
-      <tr>
-        <td>white</td>
-        <td>1 Piece is the correct color, in the wrong position</td>
-      </tr>
-      <tr>
-        <td>black</td>
-        <td>1 piece of incorrect color and position.</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- New Table -->
-
   <div class="w-1/2 mx-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-200">
@@ -67,31 +43,29 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-blue-500 border-b">
+        <tr class="bg-gray-100 border-b">
           <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
-            <div class="w-8 h-8 rounded-3xl bg-red-800">
+            <div class="w-4 h-4 rounded-3xl bg-red-600">
             </div>
           </th>
           <td class="px-2 py-1">
-            1 Piece is the correct color, in the correct position
+            1 Piece has the correct color and position
           </td>
         </tr>
-        <tr class="bg-blue-500 border-b">
+        <tr class="bg-gray-100 border-b">
           <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
-            <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-white.png" width="15" height="15"
-              alt>
+            <div class="w-4 h-4 rounded-3xl bg-white">
           </th>
           <td class="px-2 py-1">
-            1 Piece is the correct color, in the wrong position
+            1 Piece has the correct color, but is in the wrong position
           </td>
         </tr>
-        <tr class="bg-blue-500">
+        <tr class="bg-gray-100">
           <th scope="row" class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap">
-            <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-black.png" width="15" height="15"
-              alt>
+            <div class="w-4 h-4 rounded-3xl bg-black">
           </th>
           <td class="px-2 py-1">
-            1 piece of incorrect color and position.
+            1 piece has both incorrect color and position
           </td>
         </tr>
       </tbody>
@@ -102,98 +76,116 @@
 
 
   <!-- Main Game Board -->
-  <table>
-    <!-- Computer Answers -->
-    <tr>
-      {% for n in range(game.cols) %}
-      <td>
-        <div id="actual-{{n}}" {% if row==1 %}class="droppable" {% endif %}
-          style="height: 32px; width: 32px; background-image: url('../static/images/question-mark.png'); background-size: cover;">
-        </div>
-      </td>
+  <div class="max-w-xl mx-auto mt-8">
+    <table class="mx-auto bg-slate-600">
+      <!-- Computer Answers -->
+      <tr>
+        {% for n in range(game.cols) %}
+        <td>
+          <div id="actual-{{n}}" {% if row==1 %}class="droppable" {% endif %}
+            style="height: 32px; width: 32px; background-image: url('../static/images/question-mark.png'); background-size: cover;">
+          </div>
+        </td>
+        {% endfor %}
+      </tr>
+      <!-- Dynamic population of game rows/cols -->
+      {% for row in range(game.rows,0,-1) %}
+      <tr id="row{{row}}">
+        {% for col in range(game.cols,0,-1) %}
+        <td>
+          <div id="row{{row}}-col{{col}}" {% if row==1 %}class="droppable" {% endif %}
+            style="height: 32px; width: 32px; background-image: url('../static/images/result-circle-empty.png'); background-size: cover;">
+          </div>
+        </td>
+        {% endfor %}
+        <td>
+          <!-- Guess Feedback Peg Area, dynamically rendered (evens & odds) -->
+          <table cellspacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <!-- odds -->
+                {% for col in range(0, game.cols, 2) %}
+                <td class="p-px">
+                  <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-black-test.png" width="15"
+                    height="15" alt>
+                </td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <!-- evens -->
+                {% for col in range(1, game.cols, 2) %}
+                <td class="p-px">
+                  <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-black-test.png" width="15"
+                    height="15" alt>
+                </td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          {% if row == 1 %}
+          <input type="button" value="Submit" class="submitGuessBtn" id="row-{{row}}-Btn">
+          {% else %}
+          <input type="button" value="Submit" class="submitGuessBtn" id="row-{{row}}-Btn" hidden>
+          {% endif %}
+        </td>
+      </tr>
       {% endfor %}
-    </tr>
-    <!-- Dynamic population of game rows/cols -->
-    {% for row in range(game.rows,0,-1) %}
-    <tr id="row{{row}}">
-      {% for col in range(game.cols,0,-1) %}
-      <td>
-        <div id="row{{row}}-col{{col}}" {% if row==1 %}class="droppable" {% endif %}
-          style="height: 32px; width: 32px; background-image: url('../static/images/result-circle-empty.png'); background-size: cover;">
-        </div>
-      </td>
-      {% endfor %}
-      <td>
-        <!-- Guess Feedback Peg Area, dynamically rendered (evens & odds) -->
-        <table cellspacing="0" cellpadding="0">
-          <tbody>
-            <tr>
-              <!-- odds -->
-              {% for col in range(0, game.cols, 2) %}
-              <td>
-                <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-black.png" width="15"
-                  height="15" alt>
-              </td>
-              {% endfor %}
-            </tr>
-            <tr>
-              <!-- evens -->
-              {% for col in range(1, game.cols, 2) %}
-              <td>
-                <img id="row{{row}}ResultPeg-{{col}}" src="/static/images/result-circle-black.png" width="15"
-                  height="15" alt>
-              </td>
-              {% endfor %}
-            </tr>
-          </tbody>
-        </table>
-      </td>
-      <td>
-        {% if row == 1 %}
-        <input type="button" value="Submit" class="submitGuessBtn" id="row-{{row}}-Btn">
-        {% else %}
-        <input type="button" value="Submit" class="submitGuessBtn" id="row-{{row}}-Btn" hidden>
+    </table>
+    {% endif %}
+  </div>
+
+  <div class="max-w-lg mx-auto mt-8">
+    <!-- Player Peg Selection -->
+    <p class="text-center">Drag pieces onto the game board:</p>
+    <table class="mx-auto bg-slate-600">
+      <tbody>
+        <tr>
+          <!-- Playable pegs spill over into second <tr> if colors > columns -->
+          {% with stop_val = [game.cols, game.colors]|min %}
+          {% for n in range(stop_val) %}
+          <td>
+            <a>
+              <img src="/static/images/guess-choices/peg{{n}}.gif" data-val="{{n}}" class="draggable" width="32"
+                height="32" draggable="true">
+            </a>
+          </td>
+          {% endfor %}
+        </tr>
+        {% if game.colors > stop_val %}
+        <tr>
+          {% for n in range(stop_val, game.colors) %}
+          <td>
+            <a>
+              <img src="/static/images/guess-choices/peg{{n}}.gif" data-val="{{n}}" class="draggable" width="32"
+                height="32" draggable="true">
+            </a>
+          </td>
+          {% endfor %}
+        </tr>
         {% endif %}
-      </td>
-    </tr>
-    {% endfor %}
+        {% endwith %}
+      </tbody>
+    </table>
+  </div>
 
+  <!-- Hover Button -->
+  <button data-tooltip-target="tooltip-red" type="button"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Default
+    tooltip</button>
+  <!-- Tooltip Content -->
+  <div id="tooltip-white" role="tooltip"
+    class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+    1 Piece is the correct color, in the wrong position
+    <div class="tooltip-arrow" data-popper-arrow></div>
+  </div>
 
-
-  </table>
-  {% endif %}
-
-  <!-- Player Peg Selection -->
-  <p>Drag pieces onto the game board:</p>
-  <table>
-    <tbody>
-      <tr>
-        <!-- Playable pegs spill over into second <tr> if colors > columns -->
-        {% with stop_val = [game.cols, game.colors]|min %}
-        {% for n in range(stop_val) %}
-        <td>
-          <a>
-            <img src="/static/images/guess-choices/peg{{n}}.gif" data-val="{{n}}" class="draggable" width="32"
-              height="32" draggable="true">
-          </a>
-        </td>
-        {% endfor %}
-      </tr>
-      {% if game.colors > stop_val %}
-      <tr>
-        {% for n in range(stop_val, game.colors) %}
-        <td>
-          <a>
-            <img src="/static/images/guess-choices/peg{{n}}.gif" data-val="{{n}}" class="draggable" width="32"
-              height="32" draggable="true">
-          </a>
-        </td>
-        {% endfor %}
-      </tr>
-      {% endif %}
-      {% endwith %}
-    </tbody>
-  </table>
+  <div id="tooltip-red" role="tooltip"
+    class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+    1 Piece is the correct color, in the correct position
+    <div class="tooltip-arrow" data-popper-arrow></div>
+  </div>
 
   <!-- Game Modification Form -->
   <form method="POST">
