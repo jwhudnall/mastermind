@@ -6,20 +6,19 @@ $(document).ready(function () {
 const submitGuessBtn = $(".submitGuessBtn");
 
 const sendGuessToServer = async function (guess) {
-  console.log(guess);
   try {
     const res = await axios.post(
       "/api/guess",
       { guess },
       { headers: { "content-type": "application/json" } }
     );
-    console.log("Finished res!");
 
     if (res.data.error) {
       alert("All inputs are required");
       return false;
     } else {
-      console.log(res.data);
+      // Uncomment to view response from console during game play:
+      // console.log(res.data);
       return res.data;
     }
   } catch (e) {
@@ -28,7 +27,6 @@ const sendGuessToServer = async function (guess) {
 };
 
 const handleGuess = async function () {
-  console.log("Clicked!");
   const inputs = $("[data-dropped]");
   const values = $.map(inputs, function (val) {
     return val.dataset.dropped;
@@ -54,7 +52,7 @@ const provideFeedback = (curRow, res) => {
       const target = $(`#row${curRow}ResultPeg-${curPeg}`);
       target.attr("src", "/static/images/result-circle-red.png");
       target.attr("data-tooltip-target", "tooltip-red");
-      console.log(`Result peg: ${curPeg} set to RED.`);
+      // console.log(`Result peg: ${curPeg} set to RED.`);
       curPeg++;
     }
   }
@@ -62,7 +60,7 @@ const provideFeedback = (curRow, res) => {
     for (let i = 0; i < res.white; i++) {
       const target = $(`#row${curRow}ResultPeg-${curPeg}`);
       target.attr("src", "/static/images/result-circle-white.png");
-      console.log(`Result peg: ${curPeg} set to WHITE.`);
+      // console.log(`Result peg: ${curPeg} set to WHITE.`);
       curPeg++;
     }
   }
@@ -157,7 +155,10 @@ function drop(ev) {
   ev.target.dataset.dropped = data;
 }
 
-// Adds tooltip above result pegs
+//
+/** Adds tooltip above result pegs.
+ *  ex: addTooltips("red", "white") adds
+ */
 const addTooltips = function () {
   for (let color of arguments) {
     const targetEl = document.getElementById(`tooltip-${color}`);
