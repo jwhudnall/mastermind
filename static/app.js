@@ -1,9 +1,9 @@
 $(document).ready(function () {
   setListeners();
-  submitGuessBtns.click(handleGuess);
+  submitGuessBtn.click(handleGuess);
 });
 
-const submitGuessBtns = $(".submitGuessBtn");
+const submitGuessBtn = $(".submitGuessBtn");
 
 const sendGuessToServer = async function (guess) {
   console.log(guess);
@@ -37,6 +37,7 @@ const handleGuess = async function () {
   if (res) {
     const rowNum = res.game.current_guess - 1;
     provideFeedback(rowNum, res.results);
+    addTooltips("red", "white");
     disableRow(rowNum);
     const gameIsOver = checkForGameOver(res);
     if (!gameIsOver) {
@@ -52,6 +53,7 @@ const provideFeedback = (curRow, res) => {
     for (let i = 0; i < res.red; i++) {
       const target = $(`#row${curRow}ResultPeg-${curPeg}`);
       target.attr("src", "/static/images/result-circle-red.png");
+      target.attr("data-tooltip-target", "tooltip-red");
       console.log(`Result peg: ${curPeg} set to RED.`);
       curPeg++;
     }
@@ -72,7 +74,7 @@ const disableRow = (row) => {
     $(this).removeClass("droppable");
     $(this).removeAttr("data-dropped");
   });
-  $(`#row-${row}-Btn`).hide();
+  // $(`#row-${row}-Btn`).hide();
   $(`#row${row}`).removeClass("bg-slate-400");
 };
 
@@ -80,7 +82,7 @@ const showNextRow = (row) => {
   $(`#row${row} td div`).each(function () {
     $(this).addClass("droppable");
   });
-  $(`#row-${row}-Btn`).show();
+  // $(`#row-${row}-Btn`).show();
   $(`#row${row}`).addClass("bg-slate-400");
   setListeners();
 };
@@ -91,13 +93,13 @@ const decrementGuessCount = () => {
 };
 
 const handleGameWin = (winningSequence) => {
-  submitGuessBtns.prop("hidden", true);
+  submitGuessBtn.prop("hidden", true);
   showWinningSequence(winningSequence);
   alert("Congratulations, you win!");
 };
 
 const handleGameLoss = (winningSequence) => {
-  submitGuessBtns.prop("hidden", true);
+  submitGuessBtn.prop("hidden", true);
   showWinningSequence(winningSequence);
   alert("Game Over. I'm sure you'll get it next time!");
 };
@@ -154,3 +156,16 @@ function drop(ev) {
   ev.target.style.backgroundImage = `url('../static/images/guess-choices/peg${data}.gif')`;
   ev.target.dataset.dropped = data;
 }
+
+// Adds tooltip above result pegs
+const addTooltips = function () {
+  for (let color of arguments) {
+    const targetEl = document.getElementById(`tooltip-${color}`);
+    const triggerEls = document.querySelectorAll(
+      `img[src$='/static/images/result-circle-${color}.png']`
+    );
+    triggerEls.forEach((el) => {
+      new Tooltip(targetEl, el);
+    });
+  }
+};
