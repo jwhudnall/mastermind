@@ -22,6 +22,34 @@ To run the game, you should have the latest version of [Python](https://www.pyth
 5. Start the game via `flask run`. (If you wish to use an alternate port, run `flask run -p desired_port`).
 6. In your browser, copy/paste the following link: `localhost:5002` (where _5002_ is the port specified after initiating `flask run`).
 
+## Game Logic Flow
+
+Primary game logic is as follows:
+
+1. The player is presented with an empty game board, with the first row highlighted (and identified via a left-facing arrow icon) to indicate the current row.
+
+2. As the player drags and drops pegs onto the current row, the `data-val` attribute from the dragged piece translates into a `data-dropped` attribute on the game board slot.
+
+3. When the player clicks the **Submit Guess** button, Javascript checks the values of each `data-dropped` value in the current row. If the length of these values is less than the current game's sequence length, a popup is displayed requesting that the user fills all row slots prior to submitting a guess.
+
+4. The values from the JS array are sent to the server via a `POST` request. The guess is then validated server side, verifying that the values are of the correct length, data type and within the range of the specified `game.colors` value. In the unlikely event that this validation fails, the user is alerted via a JSON response containing an `error` key.
+
+5. If the guess passes validation, it is then run through a `check_guess` function which compares the user-guess vs. the correct sequence. To accomplish this, I check the values in each array, first looking for cross-pairs (a correct guess in the correct position), and then inclusion in the solution array (cross-pairs matches are eliminated by setting them to None when matches occur in the previous step). The function returns a key containing `red`, `white` and `blank` key, value pairs.
+
+6. The current game instance is then updated to account for the user guess. If all results are `red`, `game.game_over` is set to `True` (red values are compared to `game.cols`). The response is then JSONified and sent back to the client as a JSON object containing `results` and `game` keys.
+
+7. On the front end, `provideFeedback` is called to fill in result peg slots, based on the `red` and `white` values from the response. To keep feedback uniform (and not indicate exactly which peg relates to the piece of feedback), red pegs are filled in, followed by white. Any blank values are ignored, as they are already indicated by the empty slots.
+
+8. `addTooltips` is called to add tooltips atop the red and white result pegs, assisting the user in the event they forget how the feedback works.
+
+9. `disableRow` then removes drop-related classes from the row that was used, and hides that row's arrow icon.
+
+10. `checkForGameOver` is called to check the status of `game.game_over` and `game.remaining_guess_count` from the response. If either case is True, the appropriate popup is displayed, and the user is encouraged to play again. If not, `False` is returned in the `gameIsOver` variable that called the function.
+
+11. `updateGuessCount` is then called to update the remaining guesses, as well as the elapsed guess count on the front end.
+
+12. Finally, if `!gameIsOver` evaluates to True, `showNextRow` is called to add the appropriate drop classes to the next row, and show it's arrow icon. The game continues until either the player guesses the right sequence, or runs out of guesses.
+
 ## Additional Features
 
 After satisfying the project requirements, I implemented the following additional features:
