@@ -1,11 +1,9 @@
-###################
-# Primary Game Class
-###################
 import requests
-from flask import jsonify
 
 
 class Mastermind:
+    '''Mastermind Game class.'''
+
     def __init__(self, rows=10, cols=4, colors=8):
         '''Mastermind Game class.'''
         self.rows = rows
@@ -35,7 +33,15 @@ class Mastermind:
     def get_numbers(self, count, max):
         '''
         Retrieves random numbers from the random.org api.
+
+        Accepts:
+          - count: Integer of amount of numbers to be returned.
+          - max: Integer of max value within returned numbers.
+
+        Returns:
+          - List of numerical strings ( ex: ['5','4','3','5'] )
         '''
+
         base_url = 'https://www.random.org/integers/'
         params = {
             'num': count,
@@ -54,7 +60,16 @@ class Mastermind:
 
     @classmethod
     def check_guess(self, actual, guess):
-        '''Compares each value in the actual, guess lists for equality. Returns feedback'''
+        '''Compares each value in the actual, guess list for equality.
+
+        Accepts:
+          - actual: List of solution values.
+          - guess: List of player guess values.
+
+        Returns:
+          - Dictionary with 'red', 'white' and 'blank' keys.
+        '''
+
         key = {
             'white': 0,
             'red': 0,
