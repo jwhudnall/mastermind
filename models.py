@@ -83,8 +83,9 @@ class Mastermind:
         return key
 
     def validate_guess_inputs(self, guess):
-        '''Input validation. Checks if any values aren't castable to numbers, or are out of range Returns a JSON response with an error key indicating
-        the first failed check, if present. If all guess inputs are valid, returns False.
+        '''Input validation. Returns error dict if invalid, else False.
+
+        Checks if any values aren't castable to numbers, or are out of range Returns a JSON response with an error key indicating the first failed check, if present. If all guess inputs are valid, returns False.
 
         Accepts:
             - guess: List of numerical strings (ex: [['1','2','3','4']])
@@ -92,18 +93,18 @@ class Mastermind:
         Returns:
             - False if validation passes, else JSON response with error key indicating issue.
         '''
-        # Remove empty game slots
-        filtered = [n for n in guess if n != '']
+
+        guess_blanks_removed = [n for n in guess if n != '']
 
         try:
-            # Checks range (plus positive non-numerical)
             not_in_range = any(int(val) < 0 or int(
                 val) > self.colors - 1 for val in guess)
         except ValueError:
             return {'error': 'One or more guess values wasn\'t castable to a number.'}
 
-        if len(filtered) != self.cols:
+        if len(guess_blanks_removed) != self.cols:
             return {'error': 'Guess values must equal Game columns.'}
         elif not_in_range:
             return {'error': 'One or more guess values were above or below the specified game parameters.'}
-        return False
+        else:
+            return False
