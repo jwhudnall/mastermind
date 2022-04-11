@@ -20,6 +20,7 @@ To run the game, you should have the latest version of [Python](https://www.pyth
 ## Gameplay
 
 - Explain the game
+- Video Link: https://youtu.be/nXwe7Sl5eTo
 
 ## Additional Features
 
