@@ -26,17 +26,17 @@ To run the game, you should have the latest version of [Python](https://www.pyth
 
 After satisfying the project requirements, I implemented the following additional features:
 
-1. Dynamic gameboard configuration to increase/decrease game difficulty. By clicking the **New Game** button, users can specify the code sequence length (columns), guess attempts (rows), as well as available colors count:
+1. Dynamic gameboard configuration to increase/decrease game difficulty. By clicking the **New Game** button, users can specify the code sequence length (columns), guess attempts (rows), and the available colors count:
 
    ![configurable-difficulty](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/configurable-difficulty.png?raw=true)
 
-2. Draggable colored pegs (instead of numbers). The core Random Number API is still used, wherein numbers are translated into colors.
-3. Guess feedback in the form of red and white colored pegs, emulating the real Mastermind game. These are dynamically rendered using Jinja to match the current game's sequence length:
+2. I refactored to use draggable, colored pegs instead of numbers. The core Random Number API is still used, wherein numbers are translated into colors.
+3. Guess feedback in the form of red and white colored pegs, emulating the real Mastermind game. These are dynamically rendered using Jinja to match the current game's sequence length.
 4. Tooltips were added above feedback pegs. When a user hovers over the red or white pegs, they are reminded of their significance:
 
    ![Tooltips](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/tooltips.png?raw=true)
 
-5. Detailed API response for the `/api/guess` route. Depending on the POST request's body content, the API will return either the requested data, or an error message indicating the issue:
+5. Detailed API response for the `/api/guess` route, testable in Insomnia/Postman/curl (note: a `content-type: application/json` header must be set ). Depending on the POST request's content, the API will return either the requested data, or an error message indicating the issue:
 
    - Success:
      ![success](https://github.com/jwhudnall/mastermind/blob/main/static/images/readme-images/api-success.png?raw=true)
