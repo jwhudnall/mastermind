@@ -52,7 +52,7 @@ Primary game logic is as follows:
 
 ## Additional Features
 
-After satisfying the project requirements, I implemented the following additional features:
+After satisfying the baseline project requirements, I implemented the following additional features:
 
 1. Dynamic gameboard configuration to increase/decrease game difficulty. By clicking the **New Game** button, users can specify the code sequence length (columns), guess attempts (rows), and the available colors count:
 
